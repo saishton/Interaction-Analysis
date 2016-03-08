@@ -62,7 +62,7 @@ close(clusteringfig);
 %==Fit Distributions for Number of Active Links==%
 [F_links,X_links] = ecdf(numlinks);
 ccdf_links = 1-F_links;
-Xrem = [X_links(1);X_links(end-2,end)];
+Xrem = [X_links(1);X_links(end-2:end)];
 X_links = X_links(2:end-3);
 ccdf_links = ccdf_links(2:end-3);
 
