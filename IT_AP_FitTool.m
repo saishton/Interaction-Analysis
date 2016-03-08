@@ -118,7 +118,7 @@ times_stats_gp.R_Squared = gof_gp.rsquare;
 times_stats_wb.R_Squared = gof_wb.rsquare;
 
 %==Plotting==%
-CCDF_fig = figure();
+IntTimes_fig = figure();
 hold on
 plot(X_times,ccdf_times,'o')
 plot(X_times,times_ccdf_ex)
@@ -134,7 +134,7 @@ legend('Data','Exponential','Mittag Leffler','Gen. Pareto','Weibull');
 hold off
 imagefilename = [dir_ref,'/InteractionTimes_FitTool.png'];
 print(imagefilename,'-dpng')
-close(CCDF_fig);
+close(IntTimes_fig);
 
 %==Fit Distributions for Activity Potential==%
 [F_AP,X_AP] = ecdf(activityPot);
@@ -182,7 +182,6 @@ AP_ccdf_ln = logncdf(X_AP,AP_lnmu,AP_lnsig,'upper');
 dataMod = activityPot(~ismember(activityPot,APXrem));
 test_data = sort(dataMod)';
 
-
 AP_z_ex = expcdf(test_data,AP_lambda1);
 AP_z_gm = gamcdf(test_data,AP_a1,AP_b1);
 AP_z_rl = raylcdf(test_data,AP_sigma1);
@@ -222,12 +221,12 @@ print(apfilename,'-dpng')
 close(AP_fig);
 
 %==Build and Return Relevant Data==%
-times_struc_ex = struct('Rate',times_lambda);
+times_struc_ex = struct('Scale',times_lambda);
 times_struc_ml = struct('Stability',times_beta,'Scale',times_gamma);
 times_struc_gp = struct('Shape',times_k,'Scale',times_sigma,'Location',times_theta);
 times_struc_wb = struct('Scale',times_a,'Shape',times_b);
 
-ap_struc_ex = struct('Rate',AP_lambda1);
+ap_struc_ex = struct('Scale',AP_lambda1);
 ap_struc_gm = struct('Shape',AP_a1,'Scale',AP_b1);
 ap_struc_rl = struct('Scale',AP_sigma1);
 ap_struc_ln = struct('Location',AP_lnmu,'Scale',AP_lnsig);

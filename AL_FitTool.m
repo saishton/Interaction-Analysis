@@ -143,7 +143,7 @@ print(imagefilename,'-dpng')
 close(linksactivefig);
 
 %==Build and Return Relevant Data==%
-links_struc_ex = struct('Rate',links_lambda);
+links_struc_ex = struct('Scale',links_lambda);
 links_struc_gm = struct('Shape',links_a,'Scale',links_b);
 links_struc_rl = struct('Scale',links_sigma);
 links_struc_ln = struct('Location',links_lnmu,'Scale',links_lnsig);
