@@ -50,13 +50,13 @@ end
 [F_Watson,X_Watson] = ecdf(Watson_stat);
 [F_AD,X_AD] = ecdf(AD_stat);
 
-p_KolDPlus = 1-interp1(X_KolDPlus,F_KolDPlus,KolDPlus,'spline');
-p_KolDMinus = 1-interp1(X_KolDMinus,F_KolDMinus,KolDMinus,'spline');
-p_KolD = 1-interp1(X_KolD,F_KolD,KolD,'spline');
-p_CvM = 1-interp1(X_CvM,F_CvM,CvM,'spline');
-p_Kuiper = 1-interp1(X_Kuiper,F_Kuiper,Kuiper,'spline');
-p_Watson = 1-interp1(X_Watson,F_Watson,Watson,'spline');
-p_AD = 1-interp1(X_AD,F_AD,AD,'spline');
+p_KolDPlus = 1-interp1(X_KolDPlus(2:end),F_KolDPlus(2:end),KolDPlus,'spline');
+p_KolDMinus = 1-interp1(X_KolDMinus(2:end),F_KolDMinus(2:end),KolDMinus,'spline');
+p_KolD = 1-interp1(X_KolD(2:end),F_KolD(2:end),KolD,'spline');
+p_CvM = 1-interp1(X_CvM(2:end),F_CvM(2:end),CvM,'spline');
+p_Kuiper = 1-interp1(X_Kuiper(2:end),F_Kuiper(2:end),Kuiper,'spline');
+p_Watson = 1-interp1(X_Watson(2:end),F_Watson(2:end),Watson,'spline');
+p_AD = 1-interp1(X_AD(2:end),F_AD(2:end),AD,'spline');
 
 p_vals = struct('Kolmogorov_D_Plus',p_KolDPlus,...
                 'Kolmogorov_D_Minus',p_KolDMinus,...
