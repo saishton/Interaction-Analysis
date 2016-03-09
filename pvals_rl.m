@@ -9,7 +9,6 @@ Watson = Statistics.Watson;
 AD = Statistics.Anderson_Darling;
 
 num_MC = 10^n;
-generated = raylrnd(sigma,num_MC,dataLength);
 
 KolDPlus_stat = zeros(1,num_MC);
 KolDMinus_stat = zeros(1,num_MC);
@@ -20,7 +19,7 @@ Watson_stat = zeros(1,num_MC);
 AD_stat = zeros(1,num_MC);
 
 parfor i=1:num_MC
-    thisdata = generated(i,:);
+    thisdata = raylrnd(sigma,1,dataLength);
     [~,X] = ecdf(thisdata);
     if cut==0
         Xrem = [X(1)];
