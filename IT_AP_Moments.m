@@ -88,9 +88,9 @@ times_stats_wb.Root_MSE = sqrt(mean((times_z_wb-times_test_data).^2));
 
 TotSS = sum((times_test_data-mean(times_test_data)).^2);
 
-times_stats_ex.R_Squared = 1-sum((times_test_data-links_z_ex).^2)/TotSS;
-times_stats_gp.R_Squared = 1-sum((times_test_data-links_z_gp).^2)/TotSS;
-times_stats_wb.R_Squared = 1-sum((times_test_data-links_z_wb).^2)/TotSS;
+times_stats_ex.R_Squared = 1-sum((times_test_data-times_z_ex).^2)/TotSS;
+times_stats_gp.R_Squared = 1-sum((times_test_data-times_z_gp).^2)/TotSS;
+times_stats_wb.R_Squared = 1-sum((times_test_data-times_z_wb).^2)/TotSS;
 
 %==Plotting==%
 IntTimes_fig = figure();
