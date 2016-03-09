@@ -13,9 +13,9 @@ xiSolNum = vpa(xiSol);
 sigmaSolNum = vpa(sigmaSol);
 muSolNum = vpa(muSol);
 
-xiSolNumR = abs(xiSolNum);
-sigmaSolNumR = abs(sigmaSolNum);
-muSolNumR = abs(muSolNum);
+xiSolNumR = real(xiSolNum);
+sigmaSolNumR = real(sigmaSolNum);
+muSolNumR = real(muSolNum);
 
 correctSol = find(sigmaSolNumR>0,1);
 
