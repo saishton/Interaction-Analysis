@@ -1,4 +1,4 @@
-function [p_vals] = pvals_ml(dataLength,lambda,Statistics,cut,n)
+function [p_vals] = pvals_ml(dataLength,beta,gamma,Statistics,cut,n)
 
 KolDPlus = Statistics.Kolmogorov_D_Plus;
 KolDMinus = Statistics.Kolmogorov_D_Minus;
@@ -9,7 +9,7 @@ Watson = Statistics.Watson;
 AD = Statistics.Anderson_Darling;
 
 num_MC = 10^n;
-%generated = Mittag Lefflar RND
+generated = mlrnd(beta,gamma,num_MC,dataLength);
 
 KolDPlus_stat = zeros(1,num_MC);
 KolDMinus_stat = zeros(1,num_MC);
