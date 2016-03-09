@@ -42,13 +42,13 @@ end
 [F_Watson,X_Watson] = ecdf(Watson_stat);
 [F_AD,X_AD] = ecdf(AD_stat);
 
-p_KolDPlus = interp1(X_KolDPlus,F_KolDPlus,KolDPlus,'spline');
-p_KolDMinus = interp1(X_KolDMinus,F_KolDMinus,KolDMinus,'spline');
-p_KolD = interp1(X_KolD,F_KolD,KolD,'spline');
-p_CvM = interp1(X_CvM,F_CvM,CvM,'spline');
-p_Kuiper = interp1(X_Kuiper,F_Kuiper,Kuiper,'spline');
-p_Watson = interp1(X_Watson,F_Watson,Watson,'spline');
-p_AD = interp1(X_AD,F_AD,AD,'spline');
+p_KolDPlus = 1-interp1(X_KolDPlus,F_KolDPlus,KolDPlus,'spline');
+p_KolDMinus = 1-interp1(X_KolDMinus,F_KolDMinus,KolDMinus,'spline');
+p_KolD = 1-interp1(X_KolD,F_KolD,KolD,'spline');
+p_CvM = 1-interp1(X_CvM,F_CvM,CvM,'spline');
+p_Kuiper = 1-interp1(X_Kuiper,F_Kuiper,Kuiper,'spline');
+p_Watson = 1-interp1(X_Watson,F_Watson,Watson,'spline');
+p_AD = 1-interp1(X_AD,F_AD,AD,'spline');
 
 p_vals = struct('Kolmogorov_D_Plus',p_KolDPlus,...
                 'Kolmogorov_D_Minus',p_KolDMinus,...
