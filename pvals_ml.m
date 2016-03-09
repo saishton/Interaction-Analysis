@@ -1,4 +1,12 @@
-function [p_vals] = pvals_ml(dataLength,lambda,KolDPlus,KolDMinus,KolD,CvM,Kuiper,Watson,AD,cut,n)
+function [p_vals] = pvals_ml(dataLength,lambda,Statistics,cut,n)
+
+KolDPlus = Statistics.Kolmogorov_D_Plus;
+KolDMinus = Statistics.Kolmogorov_D_Minus;
+KolD = Statistics.Kolmogorov_D;
+CvM = Statistics.Cramer_von_Mises;
+Kuiper = Statistics.Kuiper;
+Watson = Statistics.Watson;
+AD = Statistics.Anderson_Darling;
 
 num_MC = 10^n;
 %generated = Mittag Lefflar RND
@@ -21,7 +29,7 @@ parfor i=1:num_MC
     end
     dataMod = thisdata(~ismember(thisdata,Xrem));
     test_data = sort(dataMod)';
-    %CDF = ML CDF
+    CDF = ones(length(test_data),1)-mlf(beta,1,-gamma*test_data.^beta,6);
 
     thisfit = testStatistics(test_data,CDF);
     

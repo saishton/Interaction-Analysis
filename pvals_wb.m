@@ -1,4 +1,12 @@
-function [p_vals] = pvals_wb(dataLength,a,b,KolDPlus,KolDMinus,KolD,CvM,Kuiper,Watson,AD,cut,n)
+function [p_vals] = pvals_wb(dataLength,a,b,Statistics,cut,n)
+
+KolDPlus = Statistics.Kolmogorov_D_Plus;
+KolDMinus = Statistics.Kolmogorov_D_Minus;
+KolD = Statistics.Kolmogorov_D;
+CvM = Statistics.Cramer_von_Mises;
+Kuiper = Statistics.Kuiper;
+Watson = Statistics.Watson;
+AD = Statistics.Anderson_Darling;
 
 num_MC = 10^n;
 generated = wblrnd(a,b,num_MC,dataLength);
