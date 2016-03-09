@@ -13,7 +13,17 @@ xiSolNum = vpa(xiSol);
 sigmaSolNum = vpa(sigmaSol);
 muSolNum = vpa(muSol);
 
-shape = double(xiSolNum);
-scale = double(sigmaSolNum);
-location = double(muSolNum);
+xiSolNumR = abs(xiSolNum);
+sigmaSolNumR = abs(sigmaSolNum);
+muSolNumR = abs(muSolNum);
+
+correctSol = find(sigmaSolNumR>0,1);
+
+xiTrue = xiSolNumR(correctSol);
+sigmaTrue = sigmaSolNumR(correctSol);
+muTrue = muSolNumR(correctSol);
+
+shape = double(xiTrue);
+scale = double(sigmaTrue);
+location = double(muTrue);
 end
