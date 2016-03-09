@@ -82,9 +82,9 @@ times_stats_ex = testStatistics(times_test_data,times_z_ex);
 times_stats_gp = testStatistics(times_test_data,times_z_gp);
 times_stats_wb = testStatistics(times_test_data,times_z_wb);
 
-times_stats_ex.Root_MSE = sqrt(mean((links_z_ex-times_test_data).^2));
-times_stats_gp.Root_MSE = sqrt(mean((links_z_gp-times_test_data).^2));
-times_stats_wb.Root_MSE = sqrt(mean((links_z_wb-times_test_data).^2));
+times_stats_ex.Root_MSE = sqrt(mean((times_z_ex-times_test_data).^2));
+times_stats_gp.Root_MSE = sqrt(mean((times_z_gp-times_test_data).^2));
+times_stats_wb.Root_MSE = sqrt(mean((times_z_wb-times_test_data).^2));
 
 TotSS = sum((times_test_data-mean(times_test_data)).^2);
 
