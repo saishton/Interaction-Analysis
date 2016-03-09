@@ -231,15 +231,28 @@ ap_struc_gm = struct('Shape',AP_a1,'Scale',AP_b1);
 ap_struc_rl = struct('Scale',AP_sigma1);
 ap_struc_ln = struct('Location',AP_lnmu,'Scale',AP_lnsig);
 
-times_EX = struct('Parameters',times_struc_ex,'Statistics',times_stats_ex);
-times_ML = struct('Parameters',times_struc_ml,'Statistics',times_stats_ml);
-times_GP = struct('Parameters',times_struc_gp,'Statistics',times_stats_gp);
-times_WB = struct('Parameters',times_struc_wb,'Statistics',times_stats_wb);
+times_size = size(times,2);
+ap_size = size(activityPot,2);
 
-AP_EX = struct('Parameters',ap_struc_ex,'Statistics',AP_stats_ex);
-AP_GM = struct('Parameters',ap_struc_gm,'Statistics',AP_stats_gm);
-AP_RL = struct('Parameters',ap_struc_rl,'Statistics',AP_stats_rl);
-AP_LN = struct('Parameters',ap_struc_ln,'Statistics',AP_stats_ln);
+times_pvals_ex = pvals_ex(times_size,times_lambda,times_stats_ex,7,6);
+times_pvals_ml = pvals_ml(times_size,times_beta,times_gamma,times_stats_ml,7,6);
+times_pvals_gp = pvals_gp(times_size,times_k,times_sigma,times_theta,times_stats_gp,7,6);
+times_pvals_wb = pvals_wb(times_size,times_a,times_b,times_stats_wb,7,6);
+
+ap_pvals_ex = pvals_ex(ap_size,AP_lambda1,AP_stats_ex,0,6);
+ap_pvals_gm = pvals_gm(ap_size,AP_a1,AP_b1,AP_stats_gm,0,6);
+ap_pvals_rl = pvals_rl(ap_size,AP_sigma1,AP_stats_rl,0,6);
+ap_pvals_ln = pvals_ln(ap_size,AP_lnmu,AP_lnsig,AP_stats_ln,0,6);
+
+times_EX = struct('Parameters',times_struc_ex,'Statistics',times_stats_ex,'pValues',times_pvals_ex);
+times_ML = struct('Parameters',times_struc_ml,'Statistics',times_stats_ml,'pValues',times_pvals_ml);
+times_GP = struct('Parameters',times_struc_gp,'Statistics',times_stats_gp,'pValues',times_pvals_gp);
+times_WB = struct('Parameters',times_struc_wb,'Statistics',times_stats_wb,'pValues',times_pvals_wb);
+
+AP_EX = struct('Parameters',ap_struc_ex,'Statistics',AP_stats_ex,'pValues',ap_pvals_ex);
+AP_GM = struct('Parameters',ap_struc_gm,'Statistics',AP_stats_gm,'pValues',ap_pvals_gm);
+AP_RL = struct('Parameters',ap_struc_rl,'Statistics',AP_stats_rl,'pValues',ap_pvals_rl);
+AP_LN = struct('Parameters',ap_struc_ln,'Statistics',AP_stats_ln,'pValues',ap_pvals_ln);
 
 IT_Struc = struct('Exponential',times_EX,'MittagLeffler',times_ML,'GenPareto',times_GP,'Weibull',times_WB);
 AP_Struc = struct('Exponential',AP_EX,'Gamma',AP_GM,'Rayleigh',AP_RL,'LogNormal',AP_LN);

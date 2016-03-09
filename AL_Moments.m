@@ -97,10 +97,15 @@ links_struc_gm = struct('Shape',links_a,'Scale',links_b);
 links_struc_rl = struct('Scale',links_sigma);
 links_struc_ln = struct('Location',links_lnmu,'Scale',links_lnsig);
 
-EX = struct('Parameters',links_struc_ex,'Statistics',links_stats_ex);
-GM = struct('Parameters',links_struc_gm,'Statistics',links_stats_gm);
-RL = struct('Parameters',links_struc_rl,'Statistics',links_stats_rl);
-LN = struct('Parameters',links_struc_ln,'Statistics',links_stats_ln);
+links_pvals_ex = pvals_ex(num_times,links_lambda,links_stats_ex,3,6);
+links_pvals_gm = pvals_gm(num_times,links_a,links_b,links_stats_gm,3,6);
+links_pvals_rl = pvals_rl(num_times,links_sigma,links_stats_rl,3,6);
+links_pvals_ln = pvals_ln(num_times,links_lnmu,links_lnsig,links_stats_ln,3,6);
+
+EX = struct('Parameters',links_struc_ex,'Statistics',links_stats_ex,'pValues',links_pvals_ex);
+GM = struct('Parameters',links_struc_gm,'Statistics',links_stats_gm,'pValues',links_pvals_gm);
+RL = struct('Parameters',links_struc_rl,'Statistics',links_stats_rl,'pValues',links_pvals_rl);
+LN = struct('Parameters',links_struc_ln,'Statistics',links_stats_ln,'pValues',links_pvals_ln);
 
 Structure = struct('Exponential',EX,'Gamma',GM,'Rayleigh',RL,'LogNormal',LN);
 end

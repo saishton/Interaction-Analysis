@@ -65,15 +65,9 @@ M3 = mean(dataMod.^3);
 times_lambda = M1;
 times_ccdf_ex = expcdf(X_times,times_lambda,'upper');
 
-%ML
-times_beta = 0;
-times_gamma = 0;
-times_ccdf_ml = mlf(times_beta,1,-times_gamma*X_times.^times_beta,6);
+%ML MoM does not work
 
-%[times_k,times_sigma,times_theta] = gpSolve(M1,M2,M3);
-times_k = 0;
-times_sigma = 0;
-times_theta = 0;
+[times_k,times_sigma,times_theta] = gpSolve(M1,M2,M3);
 times_ccdf_gp = gpcdf(X_times,times_k,times_sigma,times_theta,'upper');
 
 [times_a,times_b] = wbSolve(M1,M2);
@@ -81,24 +75,20 @@ times_ccdf_wb = wblcdf(X_times,times_a,times_b,'upper');
 
 %==Extract GoF Data==%
 times_z_ex = expcdf(times_test_data,times_lambda);
-times_z_ml = ones(length(times_test_data),1)-mlf(times_beta,1,-times_gamma*times_test_data.^times_beta,6);
 times_z_gp = gpcdf(times_test_data,times_k,times_sigma,times_theta);
 times_z_wb = wblcdf(times_test_data,times_a,times_b);
 
 times_stats_ex = testStatistics(times_test_data,times_z_ex);
-times_stats_ml = testStatistics(times_test_data,times_z_ml);
 times_stats_gp = testStatistics(times_test_data,times_z_gp);
 times_stats_wb = testStatistics(times_test_data,times_z_wb);
 
 times_stats_ex.Root_MSE = sqrt(mean((links_z_ex-times_test_data).^2));
-times_stats_ml.Root_MSE = sqrt(mean((links_z_ml-times_test_data).^2));
 times_stats_gp.Root_MSE = sqrt(mean((links_z_gp-times_test_data).^2));
 times_stats_wb.Root_MSE = sqrt(mean((links_z_wb-times_test_data).^2));
 
 TotSS = sum((times_test_data-mean(times_test_data)).^2);
 
 times_stats_ex.R_Squared = 1-sum((times_test_data-links_z_ex).^2)/TotSS;
-times_stats_ml.R_Squared = 1-sum((times_test_data-links_z_ml).^2)/TotSS;
 times_stats_gp.R_Squared = 1-sum((times_test_data-links_z_gp).^2)/TotSS;
 times_stats_wb.R_Squared = 1-sum((times_test_data-links_z_wb).^2)/TotSS;
 
@@ -107,7 +97,6 @@ IntTimes_fig = figure();
 hold on
 plot(X_times,ccdf_times,'o')
 plot(X_times,times_ccdf_ex)
-plot(X_times,times_ccdf_ml)
 plot(X_times,times_ccdf_gp)
 plot(X_times,times_ccdf_wb)
 set(gca,'XScale','log');
@@ -115,7 +104,7 @@ set(gca,'YScale','log');
 xlabel('Contact Time (s)');
 ylabel('CCDF');
 axis([1E1,1E4,1E-5,1E0]);
-legend('Data','Exponential','Mittag Leffler','Gen. Pareto','Weibull');
+legend('Data','Exponential','Gen. Pareto','Weibull');
 hold off
 imagefilename = [dir_ref,'/InteractionTimes_Moments.png'];
 print(imagefilename,'-dpng')
@@ -192,7 +181,6 @@ close(AP_fig);
 
 %==Build and Return Relevant Data==%
 times_struc_ex = struct('Scale',times_lambda);
-times_struc_ml = struct('Stability',times_beta,'Scale',times_gamma);
 times_struc_gp = struct('Shape',times_k,'Scale',times_sigma,'Location',times_theta);
 times_struc_wb = struct('Scale',times_a,'Shape',times_b);
 
@@ -201,16 +189,27 @@ ap_struc_gm = struct('Shape',ap_a,'Scale',ap_b);
 ap_struc_rl = struct('Scale',ap_sigma);
 ap_struc_ln = struct('Location',ap_lnmu,'Scale',ap_lnsig);
 
-times_EX = struct('Parameters',times_struc_ex,'Statistics',times_stats_ex);
-times_ML = struct('Parameters',times_struc_ml,'Statistics',times_stats_ml);
-times_GP = struct('Parameters',times_struc_gp,'Statistics',times_stats_gp);
-times_WB = struct('Parameters',times_struc_wb,'Statistics',times_stats_wb);
+times_size = size(times,2);
+ap_size = size(activityPot,2);
 
-AP_EX = struct('Parameters',ap_struc_ex,'Statistics',ap_stats_ex);
-AP_GM = struct('Parameters',ap_struc_gm,'Statistics',ap_stats_gm);
-AP_RL = struct('Parameters',ap_struc_rl,'Statistics',ap_stats_rl);
-AP_LN = struct('Parameters',ap_struc_ln,'Statistics',ap_stats_ln);
+times_pvals_ex = pvals_ex(times_size,times_lambda,times_stats_ex,7,6);
+times_pvals_gp = pvals_gp(times_size,times_k,times_sigma,times_theta,times_stats_gp,7,6);
+times_pvals_wb = pvals_wb(times_size,times_a,times_b,times_stats_wb,7,6);
 
-IT_Struc = struct('Exponential',times_EX,'MittagLeffler',times_ML,'GenPareto',times_GP,'Weibull',times_WB);
+ap_pvals_ex = pvals_ex(ap_size,ap_lambda,ap_stats_ex,0,6);
+ap_pvals_gm = pvals_gm(ap_size,ap_a,ap_b,ap_stats_gm,0,6);
+ap_pvals_rl = pvals_rl(ap_size,ap_sigma,ap_stats_rl,0,6);
+ap_pvals_ln = pvals_ln(ap_size,ap_lnmu,ap_lnsig,ap_stats_ln,0,6);
+
+times_EX = struct('Parameters',times_struc_ex,'Statistics',times_stats_ex,'pValues',times_pvals_ex);
+times_GP = struct('Parameters',times_struc_gp,'Statistics',times_stats_gp,'pValues',times_pvals_gp);
+times_WB = struct('Parameters',times_struc_wb,'Statistics',times_stats_wb,'pValues',times_pvals_wb);
+
+AP_EX = struct('Parameters',ap_struc_ex,'Statistics',ap_stats_ex,'pValues',ap_pvals_ex);
+AP_GM = struct('Parameters',ap_struc_gm,'Statistics',ap_stats_gm,'pValues',ap_pvals_gm);
+AP_RL = struct('Parameters',ap_struc_rl,'Statistics',ap_stats_rl,'pValues',ap_pvals_rl);
+AP_LN = struct('Parameters',ap_struc_ln,'Statistics',ap_stats_ln,'pValues',ap_pvals_ln);
+
+IT_Struc = struct('Exponential',times_EX,'GenPareto',times_GP,'Weibull',times_WB);
 AP_Struc = struct('Exponential',AP_EX,'Gamma',AP_GM,'Rayleigh',AP_RL,'LogNormal',AP_LN);
 end
