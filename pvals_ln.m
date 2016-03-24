@@ -19,18 +19,13 @@ Watson_stat = zeros(1,num_MC);
 AD_stat = zeros(1,num_MC);
 
 parfor i=1:num_MC
-    thisdata = lognrnd(mu,sigma,1,dataLength);
-    [~,X] = ecdf(thisdata);
-    if cut==0
-        Xrem = [X(1)];
-    else
-        Xrem = [X(1);X(end-cut+1:end)]
-    end
-    dataMod = thisdata(~ismember(thisdata,Xrem));
-    test_data = sort(dataMod)';
-    CDF = logncdf(test_data,mu,sigma);
-
-    thisfit = testStatistics(test_data,CDF);
+    data = lognrnd(mu,sigma,dataLength,1);
+    data = sort(data);
+    if cut>0
+        data(end-cut+1:end) = [];
+    end 
+    CDF = logncdf(data,mu,sigma);
+    thisfit = testStatistics(data,CDF);
     
     KolDPlus_stat(i) = thisfit.Kolmogorov_D_Plus;
     KolDMinus_stat(i) = thisfit.Kolmogorov_D_Minus;
@@ -49,13 +44,13 @@ end
 [F_Watson,X_Watson] = ecdf(Watson_stat);
 [F_AD,X_AD] = ecdf(AD_stat);
 
-p_KolDPlus = 1-interp1(X_KolDPlus(2:end),F_KolDPlus(2:end),KolDPlus,'spline');
-p_KolDMinus = 1-interp1(X_KolDMinus(2:end),F_KolDMinus(2:end),KolDMinus,'spline');
-p_KolD = 1-interp1(X_KolD(2:end),F_KolD(2:end),KolD,'spline');
-p_CvM = 1-interp1(X_CvM(2:end),F_CvM(2:end),CvM,'spline');
-p_Kuiper = 1-interp1(X_Kuiper(2:end),F_Kuiper(2:end),Kuiper,'spline');
-p_Watson = 1-interp1(X_Watson(2:end),F_Watson(2:end),Watson,'spline');
-p_AD = 1-interp1(X_AD(2:end),F_AD(2:end),AD,'spline');
+p_KolDPlus = 1-interp1(X_KolDPlus(2:end),F_KolDPlus(2:end),KolDPlus,'nearest');
+p_KolDMinus = 1-interp1(X_KolDMinus(2:end),F_KolDMinus(2:end),KolDMinus,'nearest');
+p_KolD = 1-interp1(X_KolD(2:end),F_KolD(2:end),KolD,'nearest');
+p_CvM = 1-interp1(X_CvM(2:end),F_CvM(2:end),CvM,'nearest');
+p_Kuiper = 1-interp1(X_Kuiper(2:end),F_Kuiper(2:end),Kuiper,'nearest');
+p_Watson = 1-interp1(X_Watson(2:end),F_Watson(2:end),Watson,'nearest');
+p_AD = 1-interp1(X_AD(2:end),F_AD(2:end),AD,'nearest');
 
 p_vals = struct('Kolmogorov_D_Plus',p_KolDPlus,...
                 'Kolmogorov_D_Minus',p_KolDMinus,...
