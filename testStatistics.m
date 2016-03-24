@@ -18,8 +18,8 @@ WatMod = n*(sum(Z)/n - 0.5)^2;
 Usq = Wsq-WatMod;
 
 Zswitch = flipud(Z);
-AD_vec = (2*iVec-one).*(log(Z)-log(Zswitch));
-Asq = sum(AD_vec)/n - n;
+AD_vec = (2*iVec-one).*(log(Z)+log(1-Zswitch));
+Asq = -sum(AD_vec)/n - n;
 
 fit = struct(   'Kolmogorov_D_Plus',Dplu,...
                 'Kolmogorov_D_Minus',Dmin,...
