@@ -135,7 +135,7 @@ close(linksactivefig);
 %==Build and Return Relevant Data==%
 links_struc_po = struct('Mean',links_pois_lambda);
 links_struc_nb = struct('Successes',links_nb_r,'Probability',links_nb_p);
-links_struc_ge = struct('Probability',links_lnmu);
+links_struc_ge = struct('Probability',links_geo_p);
 links_pvals_po = pvals_po(num_times,links_pois_lambda,links_stats_po,3,6);
 links_pvals_nb = pvals_nb(num_times,links_nb_r,links_nb_p,links_stats_nb,3,6);
 links_pvals_ge = pvals_ge(num_times,links_geo_p,links_stats_ge,3,6);

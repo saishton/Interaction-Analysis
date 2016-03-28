@@ -95,7 +95,7 @@ close(linksactivefig);
 links_struc_po = struct('Mean',links_pois_lambda);
 links_struc_bi = struct('Trials',links_bin_n,'Probability',links_bin_p);
 links_struc_nb = struct('Successes',links_nb_r,'Probability',links_nb_p);
-links_struc_ge = struct('Probability',links_lnmu);
+links_struc_ge = struct('Probability',links_geo_p);
 links_pvals_po = pvals_po(num_times,links_pois_lambda,links_stats_po,3,6);
 links_pvals_bi = pvals_bi(num_times,links_bin_n,links_bin_p,links_stats_bi,3,6);
 links_pvals_nb = pvals_nb(num_times,links_nb_r,links_nb_p,links_stats_nb,3,6);
