@@ -65,6 +65,8 @@ ccdf_links = 1-F_links;
 Xrem = [X_links(end-2:end)];
 X_links = X_links(2:end-3);
 ccdf_links = ccdf_links(2:end-3);
+dataMod = numlinks(~ismember(numlinks,Xrem));
+links_test_data = sort(dataMod)';
 maxX = max(X_links);
 
 links_fo_po = fitoptions('Method', 'NonlinearLeastSquares','Lower',[0],'Upper',[inf],'StartPoint',[1]);
