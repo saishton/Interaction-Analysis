@@ -19,7 +19,7 @@ Watson_stat = zeros(1,num_MC);
 AD_stat = zeros(1,num_MC);
 
 parfor i=1:num_MC
-    data = geornd(R,dataLength,1);
+    data = geornd(p,dataLength,1);
     data = sort(data);
     if cut>0
         data(end-cut+1:end) = [];
