@@ -51,9 +51,9 @@ activityPot = interactions/total_interactions;
 %==Cut Extreme Data and Estimate Moments for Interaction Times==%
 [F_times,X_times] = ecdf(times);
 ccdf_times = 1-F_times;
-Xrem = [X_times(1);X_times(end-6:end)];
-X_times = X_times(2:end-7);
-ccdf_times = ccdf_times(2:end-7);
+Xrem = [X_times(end-2:end)];
+X_times = X_times(2:end-3);
+ccdf_times = ccdf_times(2:end-3);
 dataMod = times(~ismember(times,Xrem));
 times_test_data = sort(dataMod)';
 
@@ -97,7 +97,7 @@ set(gca,'XScale','log');
 set(gca,'YScale','log');
 xlabel('Contact Time (s)');
 ylabel('CCDF');
-axis([1E1,1E4,1E-5,1E0]);
+axis([-inf,inf,1E-5,1E0]);
 legend('Data','Exponential','Gen. Pareto');
 hold off
 imagefilename = [dir_ref,'/InteractionTimes_Moments.png'];
@@ -107,7 +107,7 @@ close(IntTimes_fig);
 %==Cut Extreme Data and Estimate Moments for Activity Potential==%
 [F_AP,X_AP] = ecdf(activityPot);
 ap_ccdf = 1-F_AP;
-Xrem = [X_AP(1)];
+Xrem = [];
 X_AP = X_AP(2:end);
 ap_ccdf = ap_ccdf(2:end);
 dataMod = activityPot(~ismember(activityPot,Xrem));
@@ -166,7 +166,7 @@ set(gca,'XScale','log');
 set(gca,'YScale','log');
 xlabel('Activity Potential');
 ylabel('CCDF');
-axis([1E-2,1E0,1E-2,1E0]);
+axis([-inf,inf,1E-2,1E0]);
 legend('Data','Exponential','Gamma','Rayleigh','Log-Normal');
 hold off
 apfilename = [dir_ref,'/ActivityPotential_Moments.png'];
@@ -185,8 +185,8 @@ ap_struc_ln = struct('Location',ap_lnmu,'Scale',ap_lnsig);
 times_size = size(times,2);
 ap_size = size(activityPot,2);
 
-times_pvals_ex = pvals_ex(times_size,times_lambda,times_stats_ex,7,6);
-times_pvals_gp = pvals_gp(times_size,times_k,times_sigma,times_theta,times_stats_gp,7,6);
+times_pvals_ex = pvals_ex(times_size,times_lambda,times_stats_ex,3,6);
+times_pvals_gp = pvals_gp(times_size,times_k,times_sigma,times_theta,times_stats_gp,3,6);
 
 ap_pvals_ex = pvals_ex(ap_size,ap_lambda,ap_stats_ex,0,6);
 ap_pvals_gm = pvals_gm(ap_size,ap_a,ap_b,ap_stats_gm,0,6);

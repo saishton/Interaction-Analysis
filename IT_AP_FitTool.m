@@ -51,9 +51,9 @@ activityPot = interactions/total_interactions;
 %==Fit Distributions for Interaction Times==%
 [F_times,X_times] = ecdf(times);
 ccdf_times = 1-F_times;
-Xrem = [X_times(1);X_times(end-6:end)];
-X_times = X_times(2:end-7);
-ccdf_times = ccdf_times(2:end-7);
+Xrem = [X_times(end-2:end)];
+X_times = X_times(2:end-3);
+ccdf_times = ccdf_times(2:end-3);
 
 tau = mean(times); %Get rough estimate for exponential mean
 
@@ -129,7 +129,7 @@ set(gca,'XScale','log');
 set(gca,'YScale','log');
 xlabel('Contact Time (s)');
 ylabel('CCDF');
-axis([1E1,1E4,1E-5,1E0]);
+axis([-inf,inf,1E-5,1E0]);
 legend('Data','Exponential','Mittag Leffler','Gen. Pareto','Weibull');
 hold off
 imagefilename = [dir_ref,'/InteractionTimes_FitTool.png'];
@@ -179,18 +179,18 @@ AP_lnsig = cv_ln(2);
 AP_ccdf_ln = logncdf(X_AP,AP_lnmu,AP_lnsig,'upper');
 
 %==Extract GoF Data==%
-dataMod = activityPot(~ismember(activityPot,APXrem));
-test_data = sort(dataMod)';
+dataMod2 = activityPot(~ismember(activityPot,APXrem));
+test_data2 = sort(dataMod2)';
 
-AP_z_ex = expcdf(test_data,AP_lambda1);
-AP_z_gm = gamcdf(test_data,AP_a1,AP_b1);
-AP_z_rl = raylcdf(test_data,AP_sigma1);
-AP_z_ln = logncdf(test_data,AP_lnmu,AP_lnsig);
+AP_z_ex = expcdf(test_data2,AP_lambda1);
+AP_z_gm = gamcdf(test_data2,AP_a1,AP_b1);
+AP_z_rl = raylcdf(test_data2,AP_sigma1);
+AP_z_ln = logncdf(test_data2,AP_lnmu,AP_lnsig);
 
-AP_stats_ex = testStatistics(test_data,AP_z_ex);
-AP_stats_gm = testStatistics(test_data,AP_z_gm);
-AP_stats_rl = testStatistics(test_data,AP_z_rl);
-AP_stats_ln = testStatistics(test_data,AP_z_ln);
+AP_stats_ex = testStatistics(test_data2,AP_z_ex);
+AP_stats_gm = testStatistics(test_data2,AP_z_gm);
+AP_stats_rl = testStatistics(test_data2,AP_z_rl);
+AP_stats_ln = testStatistics(test_data2,AP_z_ln);
 
 AP_stats_ex.Root_MSE = gof_ex.rmse;
 AP_stats_gm.Root_MSE = gof_gm.rmse;
@@ -213,7 +213,7 @@ set(gca,'XScale','log');
 set(gca,'YScale','log');
 xlabel('Activity Potential');
 ylabel('CCDF');
-axis([1E-2,1E0,1E-2,1E0]);
+axis([-inf,inf,1E-2,1E0]);
 legend('Data','Exponential','Gamma','Rayleigh','Log-Normal');
 hold off
 apfilename = [dir_ref,'/ActivityPotential_FitTool.png'];
@@ -234,10 +234,10 @@ ap_struc_ln = struct('Location',AP_lnmu,'Scale',AP_lnsig);
 times_size = size(times,2);
 ap_size = size(activityPot,2);
 
-times_pvals_ex = pvals_ex(times_size,times_lambda,times_stats_ex,7,6);
-times_pvals_ml = pvals_ml(times_size,times_beta,times_gamma,times_stats_ml,7,6);
-times_pvals_gp = pvals_gp(times_size,times_k,times_sigma,times_theta,times_stats_gp,7,6);
-times_pvals_wb = pvals_wb(times_size,times_a,times_b,times_stats_wb,7,6);
+times_pvals_ex = pvals_ex(times_size,times_lambda,times_stats_ex,3,6);
+%times_pvals_ml = pvals_ml(times_size,times_beta,times_gamma,times_stats_ml,3,6);
+times_pvals_gp = pvals_gp(times_size,times_k,times_sigma,times_theta,times_stats_gp,3,6);
+times_pvals_wb = pvals_wb(times_size,times_a,times_b,times_stats_wb,3,6);
 
 ap_pvals_ex = pvals_ex(ap_size,AP_lambda1,AP_stats_ex,0,6);
 ap_pvals_gm = pvals_gm(ap_size,AP_a1,AP_b1,AP_stats_gm,0,6);
@@ -245,7 +245,8 @@ ap_pvals_rl = pvals_rl(ap_size,AP_sigma1,AP_stats_rl,0,6);
 ap_pvals_ln = pvals_ln(ap_size,AP_lnmu,AP_lnsig,AP_stats_ln,0,6);
 
 times_EX = struct('Parameters',times_struc_ex,'Statistics',times_stats_ex,'pValues',times_pvals_ex);
-times_ML = struct('Parameters',times_struc_ml,'Statistics',times_stats_ml,'pValues',times_pvals_ml);
+%times_ML = struct('Parameters',times_struc_ml,'Statistics',times_stats_ml,'pValues',times_pvals_ml);
+times_ML = struct('Parameters',times_struc_ml,'Statistics',times_stats_ml,'pValues',0);
 times_GP = struct('Parameters',times_struc_gp,'Statistics',times_stats_gp,'pValues',times_pvals_gp);
 times_WB = struct('Parameters',times_struc_wb,'Statistics',times_stats_wb,'pValues',times_pvals_wb);
 

@@ -1,4 +1,4 @@
-function [p_vals] = pvals_gm(dataLength,a,b,Statistics,cut,n)
+function [p_vals] = pvals_po(dataLength,lambda,Statistics,cut,n)
 
 KolDPlus = Statistics.Kolmogorov_D_Plus;
 KolDMinus = Statistics.Kolmogorov_D_Minus;
@@ -19,13 +19,13 @@ Watson_stat = zeros(1,num_MC);
 AD_stat = zeros(1,num_MC);
 
 parfor i=1:num_MC
-    data = gamrnd(a,b,dataLength,1);
+    data = poissrnd(lambda,dataLength,1);
     data = sort(data);
     if cut>0
         data(end-cut+1:end) = [];
-    end
+    end    
     
-    CDF = gamcdf(data,a,b);
+    CDF = poisscdf(data,lambda);
     thisfit = testStatistics(data,CDF);
     
     KolDPlus_stat(i) = thisfit.Kolmogorov_D_Plus;
@@ -33,7 +33,7 @@ parfor i=1:num_MC
     KolD_stat(i) = thisfit.Kolmogorov_D;
     CvM_stat(i) = thisfit.Cramer_von_Mises;
     Kuiper_stat(i) = thisfit.Kuiper;
-    Watson_stat(i) = thisfit.Watson ;
+    Watson_stat(i) = thisfit.Watson;
     AD_stat(i) = thisfit.Anderson_Darling;
 end
 
