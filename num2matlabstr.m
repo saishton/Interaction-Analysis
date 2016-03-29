@@ -6,6 +6,8 @@ elseif r==-Inf
     str = '-\infty';
 elseif isnan(r)
     str = 'X';
+elseif r==0
+    str = '0';
 else
     expon = floor(log10(abs(r)));
     coeff = r/(10^expon);
