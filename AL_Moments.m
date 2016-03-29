@@ -89,6 +89,7 @@ set(gca,'XScale','log');
 set(gca,'YScale','log');
 xlabel('Percentage of Links Active');
 ylabel('CCDF');
+axis([-inf,inf,1E-5,1E0]);
 legend('Data','Exponential','Gamma','Rayleigh','Log-Normal','Location','southwest');
 imagefilename = [dir_ref,'/LinkActivations_Moments.png'];
 print(imagefilename,'-dpng')
