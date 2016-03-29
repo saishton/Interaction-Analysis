@@ -45,26 +45,26 @@ tobuild{035} = ['& & Watson & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.Act
 tobuild{036} = ['& & And-Dar & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.ActivityPotential_FitTool.Exponential.pValues.Anderson_Darling),'$} & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.ActivityPotential_FitTool.Gamma.pValues.Anderson_Darling),'$} & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.ActivityPotential_FitTool.Rayleigh.pValues.Anderson_Darling),'$} & \multicolumn{2}{c|}{$',num2matlabstr(Analysis.ActivityPotential_FitTool.LogNormal.pValues.Anderson_Darling),'$} \\ \hline'];
 tobuild{037} = '\end{tabular}';
 %Begin Interaction Times Results
-tobuild{038} = 
-tobuild{039} = 
-tobuild{040} = 
-tobuild{041} = 
-tobuild{042} = 
-tobuild{043} = 
-tobuild{044} = 
-tobuild{045} = 
-tobuild{046} = 
-tobuild{047} = 
-tobuild{048} = 
-tobuild{049} = 
-tobuild{050} = 
-tobuild{051} = 
-tobuild{052} = 
-tobuild{053} = 
-tobuild{054} = 
-tobuild{055} = 
-tobuild{056} = 
-tobuild{057} = 
+tobuild{038} = '\newpage';
+tobuild{039} = '\begin{tabular}{|c|c|c||c|c||c|c||c|c||c|c|} \hline';
+tobuild{040} = '\multicolumn{3}{|c||}{\textbf{Int. Times}} & \multicolumn{2}{c||}{\textbf{Exponential}} & \multicolumn{2}{c||}{\textbf{Mittag-Lefflar}} & \multicolumn{2}{c||}{\textbf{Gen. Pareto}} & \multicolumn{2}{c|}{\textbf{Weibull}} \\ \hline';
+tobuild{041} = ['\parbox[t]{2mm}{\multirow{17}{*}{\rotatebox[origin=c]{90}{Method of Moments}}} & \multicolumn{2}{|c||}{\multirow{3}{*}{\textbf{Parameters}}} & \multirow{3}{*}{Rate} & \multirow{3}{*}{$',num2matlabstr(Analysis.InteractionTimes_Moments.Exponential.Parameters.Scale),'$} & Stability & $X$ & Shape & $',num2matlabstr(Analysis.InteractionTimes_Moments.GenPareto.Parameters.Shape),'$ & Scale & $X$ \\ \cline{6-11}'];
+tobuild{042} = ['& \multicolumn{2}{|c||}{} & & & \multirow{2}{*}{Scale} & \multirow{2}{*}{$X$} & Scale & $',num2matlabstr(Analysis.InteractionTimes_Moments.GenPareto.Parameters.Scale),'$ & \multirow{2}{*}{Shape} & \multirow{2}{*}{$X$} \\ \cline{8-9}'];
+tobuild{043} = ['& \multicolumn{2}{|c||}{} & & & & & Loc. & $',num2matlabstr(Analysis.InteractionTimes_Moments.GenPareto.Parameters.Location),'$ & & \\ \cline{2-11}'];
+tobuild{044} = ['& \parbox[t]{2mm}{\multirow{7}{*}{\rotatebox[origin=c]{90}{Statistics}}} & Kol D+ & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.Exponential.Statistics.Kolmogorov_D_Plus),'$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.GenPareto.Statistics.Kolmogorov_D_Plus),'$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}'];
+tobuild{045} = ['& & Kol D- & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.Exponential.Statistics.Kolmogorov_D_Minus),'$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.GenPareto.Statistics.Kolmogorov_D_Minus),'$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}'];
+tobuild{046} = ['& & Kol D & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.Exponential.Statistics.Kolmogorov_D),'$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.GenPareto.Statistics.Kolmogorov_D),'$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}'];
+tobuild{047} = ['& & CvM & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.Exponential.Statistics.Cramer_von_Mises),'$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.GenPareto.Statistics.Cramer_von_Mises),'$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}'];
+tobuild{048} = ['& & Kuiper & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.Exponential.Statistics.Kuiper),'$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.GenPareto.Statistics.Kuiper),'$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}'];
+tobuild{049} = ['& & Watson & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.Exponential.Statistics.Watson),'$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.GenPareto.Statistics.Watson),'$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}'];
+tobuild{050} = ['& & And-Dar & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.Exponential.Statistics.Anderson_Darling),'$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.GenPareto.Statistics.Anderson_Darling),'$} & \multicolumn{2}{c|}{$X$} \\ \cline{2-11}'];
+tobuild{051} = ['& \parbox[t]{2mm}{\multirow{7}{*}{\rotatebox[origin=c]{90}{p-Values}}} & Kol D+ & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.Exponential.pValues.Kolmogorov_D_Plus),'$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.GenPareto.pValues.Kolmogorov_D_Plus),'$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}'];
+tobuild{052} = ['& & Kol D- & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.Exponential.pValues.Kolmogorov_D_Minus),'$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.GenPareto.pValues.Kolmogorov_D_Minus),'$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}'];
+tobuild{053} = ['& & Kol D & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.Exponential.pValues.Kolmogorov_D),'$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.GenPareto.pValues.Kolmogorov_D),'$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}'];
+tobuild{054} = ['& & CvM & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.Exponential.pValues.Cramer_von_Mises),'$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.GenPareto.pValues.Cramer_von_Mises),'$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}'];
+tobuild{055} = ['& & Kuiper & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.Exponential.pValues.Kuiper),'$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.GenPareto.pValues.Kuiper),'$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}'];
+tobuild{056} = ['& & Watson & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.Exponential.pValues.Watson),'$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.GenPareto.pValues.Watson),'$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}'];
+tobuild{057} = ['& & And-Dar & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.Exponential.pValues.Anderson_Darling),'$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.InteractionTimes_Moments.GenPareto.pValues.Anderson_Darling),'$} & \multicolumn{2}{c|}{$X$} \\ \hline \hline'];
 tobuild{058} = 
 tobuild{059} = 
 tobuild{060} = 
@@ -83,7 +83,7 @@ tobuild{072} =
 tobuild{073} = 
 tobuild{074} = 
 tobuild{075} = 
-tobuild{076} = 
+tobuild{076} = '\end{tabular}';
 %Begin Active Links Results
 tobuild{077} = '\newpage';
 tobuild{078} = '\begin{tabular}{|c|c|c||c|c||c|c||c|c||c|c|} \hline';
@@ -122,27 +122,10 @@ tobuild{110} = ['& & Watson & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.Act
 tobuild{111} = ['& & And-Dar & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.ActiveLinks_FitTool.Exponential.pValues.Anderson_Darling),'$} & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.ActiveLinks_FitTool.Gamma.pValues.Anderson_Darling),'$} & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.ActiveLinks_FitTool.Rayleigh.pValues.Anderson_Darling),'$} & \multicolumn{2}{c|}{$',num2matlabstr(Analysis.ActiveLinks_FitTool.LogNormal.pValues.Anderson_Darling),'$} \\ \hline'];
 
 
-\end{tabular}
-\newpage
-\begin{tabular}{|c|c|c||c|c||c|c||c|c||c|c|} \hline
-\multicolumn{3}{|c||}{\textbf{Int. Times}} & \multicolumn{2}{c||}{\textbf{Exponential}} & \multicolumn{2}{c||}{\textbf{Mittag-Lefflar}} & \multicolumn{2}{c||}{\textbf{Gen. Pareto}} & \multicolumn{2}{c|}{\textbf{Weibull}} \\ \hline
-\parbox[t]{2mm}{\multirow{17}{*}{\rotatebox[origin=c]{90}{Method of Moments}}} & \multicolumn{2}{|c||}{\multirow{3}{*}{\textbf{Parameters}}} & \multirow{3}{*}{Rate} & \multirow{3}{*}{$X$} & Stability & $X$ & Shape & $X$ & Scale & $X$ \\ \cline{6-11}
-& \multicolumn{2}{|c||}{} & & & \multirow{2}{*}{Scale} & \multirow{2}{*}{$X$} & Scale & $X$ & \multirow{2}{*}{Shape} & \multirow{2}{*}{$X$} \\ \cline{8-9}
-& \multicolumn{2}{|c||}{} & & & & & Loc. & $X$ & & \\ \cline{2-11}
-& \parbox[t]{2mm}{\multirow{7}{*}{\rotatebox[origin=c]{90}{Statistics}}} & Kol D+ & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}
-& & Kol D- & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}
-& & Kol D & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}
-& & CvM & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}
-& & Kuiper & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}
-& & Watson & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}
-& & And-Dar & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c|}{$X$} \\ \cline{2-11}
-& \parbox[t]{2mm}{\multirow{7}{*}{\rotatebox[origin=c]{90}{p-Values}}} & Kol D+ & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}
-& & Kol D- & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}
-& & Kol D & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}
-& & CvM & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}
-& & Kuiper & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}
-& & Watson & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}
-& & And-Dar & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c|}{$X$} \\ \hline \hline
+
+
+
+
 \parbox[t]{2mm}{\multirow{17}{*}{\rotatebox[origin=c]{90}{Curve Fitting Tool}}} & \multicolumn{2}{|c||}{\multirow{3}{*}{\textbf{Parameters}}} & \multirow{3}{*}{Rate} & \multirow{3}{*}{$X$} & Stability & $X$ & Shape & $X$ & Scale & $X$ \\ \cline{6-11}
 & \multicolumn{2}{|c||}{} & & & \multirow{2}{*}{Scale} & \multirow{2}{*}{$X$} & Scale & $X$ & \multirow{2}{*}{Shape} & \multirow{2}{*}{$X$} \\ \cline{8-9}
 & \multicolumn{2}{|c||}{} & & & & & Loc. & $X$ & & \\ \cline{2-11}
@@ -160,7 +143,7 @@ tobuild{111} = ['& & And-Dar & \multicolumn{2}{c||}{$',num2matlabstr(Analysis.Ac
 & & Kuiper & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}
 & & Watson & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c|}{$X$} \\ \cline{3-11}
 & & And-Dar & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c||}{$X$} & \multicolumn{2}{c|}{$X$} \\ \hline
-\end{tabular}
+
 
 
 fileID = fopen(filepath,'w');
