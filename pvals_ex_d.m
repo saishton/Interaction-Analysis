@@ -50,13 +50,13 @@ end
 
 clearvars KolDPlus_stat KolDMinus_stat KolD_stat CvM_stat Kuiper_stat Watson_stat AD_stat
 
-p_KolDPlus = 1-interp1(X_KolDPlus(2:end),F_KolDPlus(2:end),KolDPlus,'nearest');
-p_KolDMinus = 1-interp1(X_KolDMinus(2:end),F_KolDMinus(2:end),KolDMinus,'nearest');
-p_KolD = 1-interp1(X_KolD(2:end),F_KolD(2:end),KolD,'nearest');
-p_CvM = 1-interp1(X_CvM(2:end),F_CvM(2:end),CvM,'nearest');
-p_Kuiper = 1-interp1(X_Kuiper(2:end),F_Kuiper(2:end),Kuiper,'nearest');
-p_Watson = 1-interp1(X_Watson(2:end),F_Watson(2:end),Watson,'nearest');
-p_AD = 1-interp1(X_AD(2:end),F_AD(2:end),AD,'nearest');
+p_KolDPlus = 1-interp1(X_KolDPlus(2:end),F_KolDPlus(2:end),KolDPlus,'next');
+p_KolDMinus = 1-interp1(X_KolDMinus(2:end),F_KolDMinus(2:end),KolDMinus,'next');
+p_KolD = 1-interp1(X_KolD(2:end),F_KolD(2:end),KolD,'next');
+p_CvM = 1-interp1(X_CvM(2:end),F_CvM(2:end),CvM,'next');
+p_Kuiper = 1-interp1(X_Kuiper(2:end),F_Kuiper(2:end),Kuiper,'next');
+p_Watson = 1-interp1(X_Watson(2:end),F_Watson(2:end),Watson,'next');
+p_AD = 1-interp1(X_AD(2:end),F_AD(2:end),AD,'next');
 
 p_vals = struct('Kolmogorov_D_Plus',p_KolDPlus,...
                 'Kolmogorov_D_Minus',p_KolDMinus,...
