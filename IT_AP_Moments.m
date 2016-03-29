@@ -185,8 +185,8 @@ ap_struc_ln = struct('Location',ap_lnmu,'Scale',ap_lnsig);
 times_size = size(times,2);
 ap_size = size(activityPot,2);
 
-times_pvals_ex = pvals_ex(times_size,times_lambda,times_stats_ex,3,6);
-times_pvals_gp = pvals_gp(times_size,times_k,times_sigma,times_theta,times_stats_gp,3,6);
+times_pvals_ex = pvals_ex_d(times_size,times_lambda,times_stats_ex,3,6,1);
+times_pvals_gp = pvals_gp_d(times_size,times_k,times_sigma,times_theta,times_stats_gp,3,6,1);
 
 ap_pvals_ex = pvals_ex(ap_size,ap_lambda,ap_stats_ex,0,6);
 ap_pvals_gm = pvals_gm(ap_size,ap_a,ap_b,ap_stats_gm,0,6);

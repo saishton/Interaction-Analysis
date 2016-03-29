@@ -234,10 +234,10 @@ ap_struc_ln = struct('Location',AP_lnmu,'Scale',AP_lnsig);
 times_size = size(times,2);
 ap_size = size(activityPot,2);
 
-times_pvals_ex = pvals_ex(times_size,times_lambda,times_stats_ex,3,6);
-%times_pvals_ml = pvals_ml(times_size,times_beta,times_gamma,times_stats_ml,3,6);
-times_pvals_gp = pvals_gp(times_size,times_k,times_sigma,times_theta,times_stats_gp,3,6);
-times_pvals_wb = pvals_wb(times_size,times_a,times_b,times_stats_wb,3,6);
+times_pvals_ex = pvals_ex_d(times_size,times_lambda,times_stats_ex,3,6,1);
+times_pvals_ml = pvals_ml_d(times_size,times_beta,times_gamma,times_stats_ml,3,6,1);
+times_pvals_gp = pvals_gp_d(times_size,times_k,times_sigma,times_theta,times_stats_gp,3,6,1);
+times_pvals_wb = pvals_wb_d(times_size,times_a,times_b,times_stats_wb,3,6,1);
 
 ap_pvals_ex = pvals_ex(ap_size,AP_lambda1,AP_stats_ex,0,6);
 ap_pvals_gm = pvals_gm(ap_size,AP_a1,AP_b1,AP_stats_gm,0,6);
@@ -245,8 +245,7 @@ ap_pvals_rl = pvals_rl(ap_size,AP_sigma1,AP_stats_rl,0,6);
 ap_pvals_ln = pvals_ln(ap_size,AP_lnmu,AP_lnsig,AP_stats_ln,0,6);
 
 times_EX = struct('Parameters',times_struc_ex,'Statistics',times_stats_ex,'pValues',times_pvals_ex);
-%times_ML = struct('Parameters',times_struc_ml,'Statistics',times_stats_ml,'pValues',times_pvals_ml);
-times_ML = struct('Parameters',times_struc_ml,'Statistics',times_stats_ml,'pValues',0);
+times_ML = struct('Parameters',times_struc_ml,'Statistics',times_stats_ml,'pValues',times_pvals_ml);
 times_GP = struct('Parameters',times_struc_gp,'Statistics',times_stats_gp,'pValues',times_pvals_gp);
 times_WB = struct('Parameters',times_struc_wb,'Statistics',times_stats_wb,'pValues',times_pvals_wb);
 
