@@ -69,6 +69,13 @@ ccdf_links = 1-F_links;
 Xrem = [X_links(end-2:end)];
 X_links = X_links(2:end-3);
 ccdf_links = ccdf_links(2:end-3);
+dataMod = linksratio(~ismember(linksratio,Xrem));
+links_test_data = sort(dataMod)';
+
+M1 = mean(dataMod);
+M2 = mean(dataMod.^2);
+start_lnsig = sqrt(log(M2*(M1^-2)));
+start_lnmu = log(M1)-(0.5*start_lnsig^2);
 
 links_fo_ex = fitoptions('Method', 'NonlinearLeastSquares','Lower',[0],'Upper',[inf],'StartPoint',[1]);
 links_ft_ex = fittype('expcdf(x,lambda,''upper'')','options',links_fo_ex);
@@ -85,7 +92,7 @@ links_ft_rl = fittype('raylcdf(x,sigma,''upper'')','options',links_fo_rl);
 [links_cf_rl,links_gof_rl] = fit(X_links,ccdf_links,links_ft_rl);
 links_cv_rl = coeffvalues(links_cf_rl);
 
-links_fo_ln = fitoptions('Method', 'NonlinearLeastSquares','Lower',[-inf 0],'Upper',[inf inf],'StartPoint',[0 1]);
+links_fo_ln = fitoptions('Method', 'NonlinearLeastSquares','Lower',[-inf 0],'Upper',[inf inf],'StartPoint',[start_lnmu start_lnsig]);
 links_ft_ln = fittype('logncdf(x,mu,sigma,''upper'')','options',links_fo_ln);
 [links_cf_ln,links_gof_ln] = fit(X_links,ccdf_links,links_ft_ln);
 links_cv_ln = coeffvalues(links_cf_ln);
@@ -106,9 +113,6 @@ links_lnsig = links_cv_ln(2);
 links_ccdf_ln = logncdf(X_links,links_lnmu,links_lnsig,'upper');
 
 %==Extract GoF Data==%
-dataMod = linksratio(~ismember(linksratio,Xrem));
-links_test_data = sort(dataMod)';
-
 links_z_ex = expcdf(links_test_data,links_lambda);
 links_z_gm = gamcdf(links_test_data,links_a,links_b);
 links_z_rl = raylcdf(links_test_data,links_sigma);
@@ -140,6 +144,7 @@ set(gca,'XScale','log');
 set(gca,'YScale','log');
 xlabel('Percentage of Links Active');
 ylabel('CCDF');
+axis([-inf,inf,1E-5,1E0]);
 legend('Data','Exponential','Gamma','Rayleigh','Log-Normal','Location','southwest');
 imagefilename = [dir_ref,'/LinkActivations_FitTool.png'];
 print(imagefilename,'-dpng')
