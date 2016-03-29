@@ -48,6 +48,8 @@ end
 [F_Watson,X_Watson] = ecdf(Watson_stat);
 [F_AD,X_AD] = ecdf(AD_stat);
 
+clearvars KolDPlus_stat KolDMinus_stat KolD_stat CvM_stat Kuiper_stat Watson_stat AD_stat
+
 p_KolDPlus = 1-interp1(X_KolDPlus(2:end),F_KolDPlus(2:end),KolDPlus,'nearest');
 p_KolDMinus = 1-interp1(X_KolDMinus(2:end),F_KolDMinus(2:end),KolDMinus,'nearest');
 p_KolD = 1-interp1(X_KolD(2:end),F_KolD(2:end),KolD,'nearest');
