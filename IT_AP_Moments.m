@@ -98,7 +98,7 @@ set(gca,'YScale','log');
 xlabel('Contact Time (s)');
 ylabel('CCDF');
 axis([-inf,inf,1E-5,1E0]);
-legend('Data','Exponential','Gen. Pareto');
+legend('Data','Exponential','Gen. Pareto','Location','southwest');
 hold off
 imagefilename = [dir_ref,'/InteractionTimes_Moments.png'];
 print(imagefilename,'-dpng')
@@ -167,7 +167,7 @@ set(gca,'YScale','log');
 xlabel('Activity Potential');
 ylabel('CCDF');
 axis([-inf,inf,1E-2,1E0]);
-legend('Data','Exponential','Gamma','Rayleigh','Log-Normal');
+legend('Data','Exponential','Gamma','Rayleigh','Log-Normal','Location','southwest');
 hold off
 apfilename = [dir_ref,'/ActivityPotential_Moments.png'];
 print(apfilename,'-dpng')

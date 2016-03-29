@@ -130,7 +130,7 @@ set(gca,'YScale','log');
 xlabel('Contact Time (s)');
 ylabel('CCDF');
 axis([-inf,inf,1E-5,1E0]);
-legend('Data','Exponential','Mittag Leffler','Gen. Pareto','Weibull');
+legend('Data','Exponential','Mittag Leffler','Gen. Pareto','Weibull','Location','southwest');
 hold off
 imagefilename = [dir_ref,'/InteractionTimes_FitTool.png'];
 print(imagefilename,'-dpng')
@@ -214,7 +214,7 @@ set(gca,'YScale','log');
 xlabel('Activity Potential');
 ylabel('CCDF');
 axis([-inf,inf,1E-2,1E0]);
-legend('Data','Exponential','Gamma','Rayleigh','Log-Normal');
+legend('Data','Exponential','Gamma','Rayleigh','Log-Normal','Location','southwest');
 hold off
 apfilename = [dir_ref,'/ActivityPotential_FitTool.png'];
 print(apfilename,'-dpng')
