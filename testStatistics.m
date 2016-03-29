@@ -29,6 +29,11 @@ Usq = Wsq-WatMod;
 Zswitch = flipud(Z);
 AD_vec = (2*middlecdf).*(log(Z)+log(1-Zswitch));
 Asq = -sum(AD_vec) - n;
+if Asq == inf
+    Asq = 10^50;
+elseif Asq == -inf
+    Asq = -10^50;
+end
 
 fit = struct(   'Kolmogorov_D_Plus',Dplu,...
                 'Kolmogorov_D_Minus',Dmin,...
