@@ -5,6 +5,8 @@ data_length = size(data(:,1),1);
 num_people = max([data(:,2); data(:,3)]);
 contact_time = 20;
 
+max_links = num_people*(num_people-1)/2;
+
 numlinks = zeros(1,num_times);
 
 for m=1:num_times
@@ -23,13 +25,15 @@ for m=1:num_times
     numlinks(m) = adjsum/2;
 end
 
+linksratio = numlinks/max_links;
+
 %==Cut Extreme Data and Estimate Moments==%
-[F_links,X_links] = ecdf(numlinks);
+[F_links,X_links] = ecdf(linksratio);
 ccdf_links = 1-F_links;
 Xrem = [X_links(end-2:end)];
 X_links = X_links(2:end-3);
 ccdf_links = ccdf_links(2:end-3);
-dataMod = numlinks(~ismember(numlinks,Xrem));
+dataMod = linksratio(~ismember(linksratio,Xrem));
 links_test_data = sort(dataMod)';
 
 M1 = mean(dataMod);
@@ -83,9 +87,8 @@ plot(X_links,links_ccdf_rl);
 plot(X_links,links_ccdf_ln);
 set(gca,'XScale','log');
 set(gca,'YScale','log');
-xlabel('Number of Active Links');
+xlabel('Percentage of Links Active');
 ylabel('CCDF');
-axis([-inf,inf,1E-4,1E0]);
 legend('Data','Exponential','Gamma','Rayleigh','Log-Normal');
 imagefilename = [dir_ref,'/LinkActivations_Moments.png'];
 print(imagefilename,'-dpng')
