@@ -73,19 +73,13 @@ times_ccdf_gp = gpcdf(X_times,times_k,times_sigma,times_theta,'upper');
 %WL MoM does not work
 
 %==Extract GoF Data==%
-times_z_ex = expcdf(times_test_data,times_lambda);
-times_z_gp = gpcdf(times_test_data,times_k,times_sigma,times_theta);
+grid = (min(times_test_data)-20):20:max(times_test_data);
 
-times_stats_ex = testStatistics(times_test_data,times_z_ex);
-times_stats_gp = testStatistics(times_test_data,times_z_gp);
+times_z_ex = expcdf(grid,times_lambda);
+times_z_gp = gpcdf(grid,times_k,times_sigma,times_theta);
 
-times_stats_ex.Root_MSE = sqrt(mean((times_z_ex-times_test_data).^2));
-times_stats_gp.Root_MSE = sqrt(mean((times_z_gp-times_test_data).^2));
-
-TotSS = sum((times_test_data-mean(times_test_data)).^2);
-
-times_stats_ex.R_Squared = 1-sum((times_test_data-times_z_ex).^2)/TotSS;
-times_stats_gp.R_Squared = 1-sum((times_test_data-times_z_gp).^2)/TotSS;
+times_stats_ex = testStatistics_d(times_test_data,times_z_ex,20);
+times_stats_gp = testStatistics_d(times_test_data,times_z_gp,20);
 
 %==Plotting==%
 IntTimes_fig = figure();
@@ -185,8 +179,8 @@ ap_struc_ln = struct('Location',ap_lnmu,'Scale',ap_lnsig);
 times_size = size(times,2);
 ap_size = size(activityPot,2);
 
-times_pvals_ex = pvals_ex_d(times_size,times_lambda,times_stats_ex,3,6,1);
-times_pvals_gp = pvals_gp_d(times_size,times_k,times_sigma,times_theta,times_stats_gp,3,6,1);
+times_pvals_ex = pvals_ex_d(times_size,times_lambda,times_stats_ex,3,6,20);
+times_pvals_gp = pvals_gp_d(times_size,times_k,times_sigma,times_theta,times_stats_gp,3,6,20);
 
 ap_pvals_ex = pvals_ex(ap_size,ap_lambda,ap_stats_ex,0,6);
 ap_pvals_gm = pvals_gm(ap_size,ap_a,ap_b,ap_stats_gm,0,6);

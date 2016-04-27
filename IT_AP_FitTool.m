@@ -98,15 +98,16 @@ times_ccdf_wb = wblcdf(X_times,times_a,times_b,'upper');
 dataMod = times(~ismember(times,Xrem));
 test_data = sort(dataMod)';
 
-times_z_ex = expcdf(test_data,times_lambda);
-times_z_ml = ones(length(test_data),1)-mlf(times_beta,1,-times_gamma*test_data.^times_beta,6);
-times_z_gp = gpcdf(test_data,times_k,times_sigma,times_theta);
-times_z_wb = wblcdf(test_data,times_a,times_b);
+grid = (min(test_data)-20):20:max(test_data);
+times_z_ex = expcdf(grid,times_lambda);
+times_z_ml = ones(length(grid),1)-mlf(times_beta,1,-times_gamma*grid.^times_beta,6);
+times_z_gp = gpcdf(grid,times_k,times_sigma,times_theta);
+times_z_wb = wblcdf(grid,times_a,times_b);
 
-times_stats_ex = testStatistics(test_data,times_z_ex);
-times_stats_ml = testStatistics(test_data,times_z_ml);
-times_stats_gp = testStatistics(test_data,times_z_gp);
-times_stats_wb = testStatistics(test_data,times_z_wb);
+times_stats_ex = testStatistics_d(test_data,times_z_ex,20);
+times_stats_ml = testStatistics_d(test_data,times_z_ml,20);
+times_stats_gp = testStatistics_d(test_data,times_z_gp,20);
+times_stats_wb = testStatistics_d(test_data,times_z_wb,20);
 
 times_stats_ex.Root_MSE = gof_ex.rmse;
 times_stats_ml.Root_MSE = gof_ml.rmse;
@@ -234,17 +235,17 @@ ap_struc_ln = struct('Location',AP_lnmu,'Scale',AP_lnsig);
 times_size = size(times,2);
 ap_size = size(activityPot,2);
 
-times_pvals_ex = pvals_ex_d(times_size,times_lambda,times_stats_ex,3,6,1);
-%times_pvals_ml = pvals_ml_d(times_size,times_beta,times_gamma,times_stats_ml,3,6,1);
-times_pvals_ml = struct('Kolmogorov_D_Plus',0,...
-                'Kolmogorov_D_Minus',0,...
-                'Kolmogorov_D',0,...
-                'Cramer_von_Mises',0,...
-                'Kuiper',0,...
-                'Watson',0,...
-                'Anderson_Darling',0);
-times_pvals_gp = pvals_gp_d(times_size,times_k,times_sigma,times_theta,times_stats_gp,3,6,1);
-times_pvals_wb = pvals_wb_d(times_size,times_a,times_b,times_stats_wb,3,6,1);
+times_pvals_ex = pvals_ex_d(times_size,times_lambda,times_stats_ex,3,6,20);
+times_pvals_ml = pvals_ml_d(times_size,times_beta,times_gamma,times_stats_ml,3,3,20);
+% times_pvals_ml = struct('Kolmogorov_D_Plus',0,...
+%                 'Kolmogorov_D_Minus',0,...
+%                 'Kolmogorov_D',0,...
+%                 'Cramer_von_Mises',0,...
+%                 'Kuiper',0,...
+%                 'Watson',0,...
+%                 'Anderson_Darling',0);
+times_pvals_gp = pvals_gp_d(times_size,times_k,times_sigma,times_theta,times_stats_gp,3,6,20);
+times_pvals_wb = pvals_wb_d(times_size,times_a,times_b,times_stats_wb,3,6,20);
 
 ap_pvals_ex = pvals_ex(ap_size,AP_lambda1,AP_stats_ex,0,6);
 ap_pvals_gm = pvals_gm(ap_size,AP_a1,AP_b1,AP_stats_gm,0,6);
