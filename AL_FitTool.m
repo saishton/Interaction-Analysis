@@ -5,8 +5,6 @@ data_length = size(data(:,1),1);
 num_people = max([data(:,2); data(:,3)]);
 contact_time = 20;
 
-max_links = num_people*(num_people-1)/2;
-
 clustering = zeros(1,num_times);
 numlinks = zeros(1,num_times);
 
@@ -35,7 +33,6 @@ for m=1:num_times
     numlinks(m) = adjsum/2;
 end
 
-linksratio = numlinks/max_links;
 
 %==Plot clustering data==%
 maxTime = (num_times-1)*contact_time;
@@ -63,26 +60,37 @@ imagefilename = [dir_ref,'/GlobalClusteringCoeff.png'];
 print(imagefilename,'-dpng')
 close(clusteringfig);
 
+autocorrfig = figure();
+subplot(2,1,1);
+autocorr(clustering,length(clustering)-1);
+subplot(2,1,2);
+parcorr(clustering,length(clustering)-1);
+imagefilename = [dir_ref,'/GCC-AutoCorrelation.png'];
+print(imagefilename,'-dpng');
+close(autocorrfig);
+
 %==Fit Distributions for Number of Active Links==%
-[F_links,X_links] = ecdf(linksratio);
+[F_links,X_links] = ecdf(numlinks);
 ccdf_links = 1-F_links;
 Xrem = [X_links(end-2:end)];
 X_links = X_links(2:end-3);
 ccdf_links = ccdf_links(2:end-3);
-dataMod = linksratio(~ismember(linksratio,Xrem));
+dataMod = numlinks(~ismember(numlinks,Xrem));
 links_test_data = sort(dataMod)';
 
 M1 = mean(dataMod);
 M2 = mean(dataMod.^2);
-start_lnsig = sqrt(log(M2*(M1^-2)));
-start_lnmu = log(M1)-(0.5*start_lnsig^2);
+b_start = (M2/M1)-M1;
+a_start = M1/b_start;
+lnsig_start = sqrt(log(M2*(M1^-2)));
+lnmu_start = log(M1)-(0.5*lnsig_start^2);
 
 links_fo_ex = fitoptions('Method', 'NonlinearLeastSquares','Lower',[0],'Upper',[inf],'StartPoint',[1]);
 links_ft_ex = fittype('expcdf(x,lambda,''upper'')','options',links_fo_ex);
 [links_cf_ex,links_gof_ex] = fit(X_links,ccdf_links,links_ft_ex);
 links_cv_ex = coeffvalues(links_cf_ex);
 
-links_fo_gm = fitoptions('Method', 'NonlinearLeastSquares','Lower',[0 0],'Upper',[inf inf],'StartPoint',[1 1]);
+links_fo_gm = fitoptions('Method', 'NonlinearLeastSquares','Lower',[0 0],'Upper',[inf inf],'StartPoint',[a_start b_start]);
 links_ft_gm = fittype('gamcdf(x,a,b,''upper'')','options',links_fo_gm);
 [links_cf_gm,links_gof_gm] = fit(X_links,ccdf_links,links_ft_gm);
 links_cv_gm = coeffvalues(links_cf_gm);
@@ -92,7 +100,7 @@ links_ft_rl = fittype('raylcdf(x,sigma,''upper'')','options',links_fo_rl);
 [links_cf_rl,links_gof_rl] = fit(X_links,ccdf_links,links_ft_rl);
 links_cv_rl = coeffvalues(links_cf_rl);
 
-links_fo_ln = fitoptions('Method', 'NonlinearLeastSquares','Lower',[-inf 0],'Upper',[inf inf],'StartPoint',[start_lnmu start_lnsig]);
+links_fo_ln = fitoptions('Method', 'NonlinearLeastSquares','Lower',[-inf 0],'Upper',[inf inf],'StartPoint',[lnmu_start lnsig_start]);
 links_ft_ln = fittype('logncdf(x,mu,sigma,''upper'')','options',links_fo_ln);
 [links_cf_ln,links_gof_ln] = fit(X_links,ccdf_links,links_ft_ln);
 links_cv_ln = coeffvalues(links_cf_ln);
@@ -142,7 +150,7 @@ plot(X_links,links_ccdf_rl);
 plot(X_links,links_ccdf_ln);
 set(gca,'XScale','log');
 set(gca,'YScale','log');
-xlabel('Percentage of Links Active');
+xlabel('Number of Links Active');
 ylabel('CCDF');
 axis([-inf,inf,1E-5,1E0]);
 legend('Data','Exponential','Gamma','Rayleigh','Log-Normal','Location','southwest');
