@@ -6,7 +6,7 @@ KolD = Statistics.Kolmogorov_D;
 CvM = Statistics.Cramer_von_Mises;
 Kuiper = Statistics.Kuiper;
 Watson = Statistics.Watson;
-AD = Statistics.Anderson_Darling;
+AD = min(Statistics.Anderson_Darling,1E99);
 
 num_MC = 10^n;
 
@@ -46,13 +46,28 @@ end
 
 clearvars KolDPlus_stat KolDMinus_stat KolD_stat CvM_stat Kuiper_stat Watson_stat AD_stat
 
-p_KolDPlus = 1-interp1(X_KolDPlus(2:end),F_KolDPlus(2:end),KolDPlus,'next');
-p_KolDMinus = 1-interp1(X_KolDMinus(2:end),F_KolDMinus(2:end),KolDMinus,'next');
-p_KolD = 1-interp1(X_KolD(2:end),F_KolD(2:end),KolD,'next');
-p_CvM = 1-interp1(X_CvM(2:end),F_CvM(2:end),CvM,'next');
-p_Kuiper = 1-interp1(X_Kuiper(2:end),F_Kuiper(2:end),Kuiper,'next');
-p_Watson = 1-interp1(X_Watson(2:end),F_Watson(2:end),Watson,'next');
-p_AD = 1-interp1(X_AD(2:end),F_AD(2:end),AD,'next');
+X_KolDPlus = [-1E99;X_KolDPlus(2:end);1E99];
+X_KolDMinus = [-1E99;X_KolDMinus(2:end);1E99];
+X_KolD = [-1E99;X_KolD(2:end);1E99];
+X_CvM = [-1E99;X_CvM(2:end);1E99];
+X_Kuiper = [-1E99;X_Kuiper(2:end);1E99];
+X_Watson = [-1E99;X_Watson(2:end);1E99];
+X_AD = [-1E99;X_AD(2:end);1E99];
+F_KolDPlus = [0;F_KolDPlus(2:end);1];
+F_KolDMinus = [0;F_KolDMinus(2:end);1];
+F_KolD = [0;F_KolD(2:end);1];
+F_CvM = [0;F_CvM(2:end);1];
+F_Kuiper = [0;F_Kuiper(2:end);1];
+F_Watson = [0;F_Watson(2:end);1];
+F_AD = [0;F_AD(2:end);1];
+
+p_KolDPlus = 1-interp1(X_KolDPlus,F_KolDPlus,KolDPlus,'next');
+p_KolDMinus = 1-interp1(X_KolDMinus,F_KolDMinus,KolDMinus,'next');
+p_KolD = 1-interp1(X_KolD,F_KolD,KolD,'next');
+p_CvM = 1-interp1(X_CvM,F_CvM,CvM,'next');
+p_Kuiper = 1-interp1(X_Kuiper,F_Kuiper,Kuiper,'next');
+p_Watson = 1-interp1(X_Watson,F_Watson,Watson,'next');
+p_AD = 1-interp1(X_AD,F_AD,AD,'next');
 
 p_vals = struct('Kolmogorov_D_Plus',p_KolDPlus,...
                 'Kolmogorov_D_Minus',p_KolDMinus,...
