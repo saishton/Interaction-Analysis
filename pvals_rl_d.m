@@ -1,4 +1,4 @@
-function [p_vals] = pvals_wb_d(dataLength,a,b,Statistics,cut,n,step)
+function [p_vals] = pvals_rl_d(dataLength,sigma,Statistics,cut,n,step)
 
 ModKol = Statistics.Modified_Kol;
 ChiSq = Statistics.Chi_Squared;
@@ -9,13 +9,13 @@ ModKol_stat = zeros(1,num_MC);
 ChiSq_stat = zeros(1,num_MC);
 
 parfor i=1:num_MC
-    data = wblrnd(a,b,dataLength,1);
+    data = raylrnd(sigma,dataLength,1);
     data = sort(data);
     if cut>0
         data(end-cut+1:end) = [];
-    end
+    end    
     grid = (min(data)-step):step:max(data);
-    CDF = wblcdf(grid,a,b);
+    CDF = raylcdf(grid,sigma);
     thisfit = testStatistics_d(data,CDF,step);
     
     ModKol_stat(i) = thisfit.Modified_Kol;
