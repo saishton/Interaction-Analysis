@@ -61,10 +61,14 @@ print(imagefilename,'-dpng')
 close(clusteringfig);
 
 autocorrfig = figure();
-subplot(2,1,1);
+subplot(3,1,1);
 autocorr(clustering,length(clustering)-1);
-subplot(2,1,2);
-parcorr(clustering,length(clustering)-1);
+subplot(3,1,2);
+smallerlag = min(round(length(clustering)-1,-2)/4,length(clustering)-1);
+autocorr(clustering,smallerlag);
+subplot(3,1,3);
+evensmallerlag = min(round(length(clustering)-1,-2)/16,length(clustering)-1);
+autocorr(clustering,evensmallerlag);
 imagefilename = [dir_ref,'/GCC-AutoCorrelation.png'];
 print(imagefilename,'-dpng');
 close(autocorrfig);
