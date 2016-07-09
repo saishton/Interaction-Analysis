@@ -67,17 +67,15 @@ NCT_lnmu = log(M1)-(0.5*NCT_lnsig^2);
 NCT_ccdf_ln = logncdf(X_NCT,NCT_lnmu,NCT_lnsig,'upper');
 
 %==Extract GoF Data==%
-grid = (min(NCT_test_data)-20):20:max(NCT_test_data);
+NCT_z_ex = expcdf(NCT_test_data,NCT_lambda);
+NCT_z_gm = gamcdf(NCT_test_data,NCT_a,NCT_b);
+NCT_z_rl = raylcdf(NCT_test_data,NCT_sigma);
+NCT_z_ln = logncdf(NCT_test_data,NCT_lnmu,NCT_lnsig);
 
-NCT_z_ex = expcdf(grid,NCT_lambda);
-NCT_z_gm = gamcdf(grid,NCT_a,NCT_b);
-NCT_z_rl = raylcdf(grid,NCT_sigma);
-NCT_z_ln = logncdf(grid,NCT_lnmu,NCT_lnsig);
-
-NCT_stats_ex = testStatistics_d(NCT_test_data,NCT_z_ex,step);
-NCT_stats_gm = testStatistics_d(NCT_test_data,NCT_z_gm,step);
-NCT_stats_rl = testStatistics_d(NCT_test_data,NCT_z_rl,step);
-NCT_stats_ln = testStatistics_d(NCT_test_data,NCT_z_ln,step);
+NCT_stats_ex = testStatistics(NCT_test_data,NCT_z_ex);
+NCT_stats_gm = testStatistics(NCT_test_data,NCT_z_gm);
+NCT_stats_rl = testStatistics(NCT_test_data,NCT_z_rl);
+NCT_stats_ln = testStatistics(NCT_test_data,NCT_z_ln);
 
 %==Plotting==%
 NCT_fig = figure();
@@ -106,10 +104,10 @@ NCT_struc_ln = struct('Location',NCT_lnmu,'Scale',NCT_lnsig);
 
 NCT_size = size(NoContact,2);
 
-NCT_pvals_ex = pvals_ex_d(NCT_size,NCT_lambda,NCT_stats_ex,0,6,step);
-NCT_pvals_gm = pvals_gm_d(NCT_size,NCT_a,NCT_b,NCT_stats_gm,0,6,step);
-NCT_pvals_rl = pvals_rl_d(NCT_size,NCT_sigma,NCT_stats_rl,0,6,step);
-NCT_pvals_ln = pvals_ln_d(NCT_size,NCT_lnmu,NCT_lnsig,NCT_stats_ln,0,6,step);
+NCT_pvals_ex = pvals_ex(NCT_size,NCT_lambda,NCT_stats_ex,0,3);
+NCT_pvals_gm = pvals_gm(NCT_size,NCT_a,NCT_b,NCT_stats_gm,0,3);
+NCT_pvals_rl = pvals_rl(NCT_size,NCT_sigma,NCT_stats_rl,0,3);
+NCT_pvals_ln = pvals_ln(NCT_size,NCT_lnmu,NCT_lnsig,NCT_stats_ln,0,3);
 
 NCT_EX = struct('Parameters',NCT_struc_ex,'Statistics',NCT_stats_ex,'pValues',NCT_pvals_ex);
 NCT_GM = struct('Parameters',NCT_struc_gm,'Statistics',NCT_stats_gm,'pValues',NCT_pvals_gm);
