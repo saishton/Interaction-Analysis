@@ -20,9 +20,16 @@ parfor m=1:num_times
         end
     end
 [~,thisCompSizes,~] = networkComponents(thisadj);
+thisCompSizes(thisCompSizes==1)=[];
+nodesActive = sum(thisCompSizes);
 thisPadding = num_people - length(thisCompSizes);
 thisCompSizes = [thisCompSizes zeros(1,thisPadding)];
-rawCompSizes(m,:) = thisCompSizes;
+if nodesActive == 0
+    thisCompFracs = thisCompSizes;
+else
+    thisCompFracs = thisCompSizes/nodesActive;
+end
+rawCompSizes(m,:) = thisCompFracs;
 end
 
 compSizes = rawCompSizes(:)';

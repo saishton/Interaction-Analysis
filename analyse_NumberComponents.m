@@ -19,7 +19,9 @@ parfor m=1:num_times
             thisadj(person2,person1) = 1;
         end
     end
-[thisCompCount,~,~] = networkComponents(thisadj);
+[~,thisComp,~] = networkComponents(thisadj);
+thisComp(thisComp==1)=[];
+thisCompCount = length(thisComp);
 components(m) = thisCompCount;
 end
 

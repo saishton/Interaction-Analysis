@@ -25,12 +25,16 @@ thisEdges = zeros(1,thisNumComps);
     for j=1:thisNumComps
         thisNodes = cell2mat(thisCompGroups(j));
         thisNodesSize = length(thisNodes);
-        thisMaxEdges = thisNodesSize*(thisNodesSize-1)/2;
-        thisSubMat = thisadj(thisNodes,thisNodes);
-        thisAdjSum = sum(sum(thisSubMat));
-        thisNumEdges = thisAdjSum/2;
-        thisFracEdges = thisNumEdges/thisMaxEdges;
-        thisEdges(j) = thisFracEdges;
+        if thisNodesSize == 1
+            thisEdges(j)=0;
+        else
+            thisMaxEdges = thisNodesSize*(thisNodesSize-1)/2;
+            thisSubMat = thisadj(thisNodes,thisNodes);
+            thisAdjSum = sum(sum(thisSubMat));
+            thisNumEdges = thisAdjSum/2;
+            thisFracEdges = thisNumEdges/thisMaxEdges;
+            thisEdges(j) = thisFracEdges;
+        end
     end
 thisPadding = num_people - length(thisEdges);
 thisEdges = [thisEdges zeros(1,thisPadding)];
@@ -38,7 +42,7 @@ rawFracEdges(m,:) = thisEdges;
 end
 
 compEdgeFracs = rawFracEdges(:)';
-compEdgeFracs(compEdgeFracs==-1) = [];
+compEdgeFracs(compEdgeFracs==0) = [];
 
 FitTool = buildStruc_ExpGamRayLN_FitTool(compEdgeFracs,dir_ref,'ComponentEdges','Fraction of Edges Active per Component');
 MLE = buildStruc_ExpGamRayLN_MLE(compEdgeFracs,dir_ref,'ComponentEdges','Fraction of Edges Active per Component');
