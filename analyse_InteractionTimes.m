@@ -1,4 +1,6 @@
-function [FitTool,MLE,Moments] = analyse_InteractionTimes(data,dir_ref)
+function [data2global,FitTool,MLE,Moments] = analyse_InteractionTimes(data,dir_ref)
+
+cutExtreme = 3;
 
 number_rows = size(data,1);
 contact_time = 20;
@@ -38,8 +40,9 @@ while j<number_rows+1
 end
 times(times_k:end) = [];
 
-FitTool = buildStruc_ExpMLGPWei_FitTool(times,dir_ref,'InteractionTimes','Length of Interaction');
-MLE = buildStruc_ExpMLGPWei_MLE(times,dir_ref,'InteractionTimes','Length of Interaction');
-Moments = buildStruc_ExpMLGPWei_Moments(times,dir_ref,'InteractionTimes','Length of Interaction');
+FitTool = buildStruc_ExpMLGPWei_FitTool(times,dir_ref,'InteractionTimes','Length of Interaction',cutExtreme);
+MLE = buildStruc_ExpMLGPWei_MLE(times,dir_ref,'InteractionTimes','Length of Interaction',cutExtreme);
+Moments = buildStruc_ExpMLGPWei_Moments(times,dir_ref,'InteractionTimes','Length of Interaction',cutExtreme);
 
+data2global = times;
 end

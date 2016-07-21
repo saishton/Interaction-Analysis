@@ -1,4 +1,6 @@
-function [FitTool,MLE,Moments] = analyse_ComponentNodes(data,dir_ref)
+function [data2global,FitTool,MLE,Moments] = analyse_ComponentNodes(data,dir_ref)
+
+cutExtreme = 1;
 
 num_times = size(unique(data(:,1)),1);
 data_length = size(data(:,1),1);
@@ -35,8 +37,9 @@ end
 compSizes = rawCompSizes(:)';
 compSizes(compSizes==0) = [];
 
-FitTool = buildStruc_ExpGamRayLN_FitTool(compSizes,dir_ref,'ComponentNodes','Fraction of Nodes per Component');
-MLE = buildStruc_ExpGamRayLN_MLE(compSizes,dir_ref,'ComponentNodes','Fraction of Nodes per Component');
-Moments = buildStruc_ExpGamRayLN_Moments(compSizes,dir_ref,'ComponentNodes','Fraction of Nodes per Component');
+FitTool = buildStruc_ExpGamRayLN_FitTool(compSizes,dir_ref,'ComponentNodes','Fraction of Nodes per Component',cutExtreme);
+MLE = buildStruc_ExpGamRayLN_MLE(compSizes,dir_ref,'ComponentNodes','Fraction of Nodes per Component',cutExtreme);
+Moments = buildStruc_ExpGamRayLN_Moments(compSizes,dir_ref,'ComponentNodes','Fraction of Nodes per Component',cutExtreme);
 
+data2global = compSizes;
 end

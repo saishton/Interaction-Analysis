@@ -1,4 +1,6 @@
-function [FitTool,MLE,Moments] = analyse_ActiveEdges(data,dir_ref)
+function [data2global,FitTool,MLE,Moments] = analyse_ActiveEdges(data,dir_ref)
+
+cutExtreme = 3;
 
 num_times = size(unique(data(:,1)),1);
 data_length = size(data(:,1),1);
@@ -25,8 +27,9 @@ parfor m=1:num_times
     links(m) = numlinks/maxlinks;
 end
 
-FitTool = buildStruc_ExpGamRayLN_FitTool(links,dir_ref,'ActiveEdges','Percentage of Edges Active');
-MLE = buildStruc_ExpGamRayLN_MLE(links,dir_ref,'ActiveEdges','Percentage of Edges Active');
-Moments = buildStruc_ExpGamRayLN_Moments(links,dir_ref,'ActiveEdges','Percentage of Edges Active');
+FitTool = buildStruc_ExpGamRayLN_FitTool(links,dir_ref,'ActiveEdges','Fraction of Edges Active',cutExtreme);
+MLE = buildStruc_ExpGamRayLN_MLE(links,dir_ref,'ActiveEdges','Fraction of Edges Active',cutExtreme);
+Moments = buildStruc_ExpGamRayLN_Moments(links,dir_ref,'ActiveEdges','Fraction of Edges Active',cutExtreme);
 
+data2global = links;
 end

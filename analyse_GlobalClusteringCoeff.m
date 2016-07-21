@@ -1,4 +1,6 @@
-function [FitTool,MLE,Moments] = analyse_GlobalClusteringCoeff(data,dir_ref)
+function [data2global,FitTool,MLE,Moments] = analyse_GlobalClusteringCoeff(data,dir_ref)
+
+cutExtreme = 0;
 
 num_times = size(unique(data(:,1)),1);
 data_length = size(data(:,1),1);
@@ -30,9 +32,11 @@ parfor m=1:num_times
     end
 end
 
-FitTool = buildStruc_ExpGamRayLN_FitTool(clustering,dir_ref,'GlobalClusteringCoeff','Global Clustering Coefficient');
-MLE = buildStruc_ExpGamRayLN_MLE(clustering,dir_ref,'GlobalClusteringCoeff','Global Clustering Coefficient');
-Moments = buildStruc_ExpGamRayLN_Moments(clustering,dir_ref,'GlobalClusteringCoeff','Global Clustering Coefficient');
+FitTool = buildStruc_ExpGamRayLN_FitTool(clustering,dir_ref,'GlobalClusteringCoeff','Global Clustering Coefficient',cutExtreme);
+MLE = buildStruc_ExpGamRayLN_MLE(clustering,dir_ref,'GlobalClusteringCoeff','Global Clustering Coefficient',cutExtreme);
+Moments = buildStruc_ExpGamRayLN_Moments(clustering,dir_ref,'GlobalClusteringCoeff','Global Clustering Coefficient',cutExtreme);
+
+data2global = clustering;
 
 maxTime = (num_times-1)*contact_time;
 T = linspace(0,maxTime,num_times);

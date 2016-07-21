@@ -1,6 +1,6 @@
-function [Analysis] = analyse(input_filename,structure,timestamp)
+function [data2global,mins,maxs] = analyse(input_folder,input_filename,structure,timestamp)
 
-iF = 'input';
+iF = ['input/',input_folder];
 oF = ['output_',timestamp];
 
 clean_input = strrep(input_filename, '.', '');
@@ -44,15 +44,15 @@ data(:,2) = -data2;
 data(:,3) = -data3;
 
 %==Perform Analysis==%
-[ActiveLinks_FitTool,ActiveLinks_MLE,ActiveLinks_Moments] = analyse_ActiveEdges(data,dir_ref);
-[NodesActive_FitTool,NodesActive_MLE,NodesActive_Moments] = analyse_ActiveNodes(data,dir_ref);
-[ActivityPotential_FitTool,ActivityPotential_MLE,ActivityPotential_Moments] = analyse_ActivityPotential(data,dir_ref);
-[Clustering_FitTool,Clustering_MLE,Clustering_Moments] = analyse_GlobalClusteringCoeff(data,dir_ref);
-[InteractionTimes_FitTool,InteractionTimes_MLE,InteractionTimes_Moments] = analyse_InteractionTimes(data,dir_ref);
-[Components_FitTool,Components_MLE,Components_Moments] = analyse_NumberComponents(data,dir_ref);
-[NoContactTimes_FitTool,NoContactTimes_MLE,NoContactTimes_Moments] = analyse_TimeBetweenContacts(data,dir_ref);
-[ComponentNodes_FitTool,ComponentNodes_MLE,ComponentNodes_Moments] = analyse_ComponentNodes(data,dir_ref);
-[ComponentEdges_FitTool,ComponentEdges_MLE,ComponentEdges_Moments] = analyse_ComponentEdges(data,dir_ref);
+[ActiveLinks_data,ActiveLinks_FitTool,ActiveLinks_MLE,ActiveLinks_Moments] = analyse_ActiveEdges(data,dir_ref);
+[NodesActive_data,NodesActive_FitTool,NodesActive_MLE,NodesActive_Moments] = analyse_ActiveNodes(data,dir_ref);
+[ActivityPotential_data,ActivityPotential_FitTool,ActivityPotential_MLE,ActivityPotential_Moments] = analyse_ActivityPotential(data,dir_ref);
+[Clustering_data,Clustering_FitTool,Clustering_MLE,Clustering_Moments] = analyse_GlobalClusteringCoeff(data,dir_ref);
+[InteractionTimes_data,InteractionTimes_FitTool,InteractionTimes_MLE,InteractionTimes_Moments] = analyse_InteractionTimes(data,dir_ref);
+[Components_data,Components_FitTool,Components_MLE,Components_Moments] = analyse_NumberComponents(data,dir_ref);
+[NoContactTimes_data,NoContactTimes_FitTool,NoContactTimes_MLE,NoContactTimes_Moments] = analyse_TimeBetweenContacts(data,dir_ref);
+[ComponentNodes_data,ComponentNodes_FitTool,ComponentNodes_MLE,ComponentNodes_Moments] = analyse_ComponentNodes(data,dir_ref);
+[ComponentEdges_data,ComponentEdges_FitTool,ComponentEdges_MLE,ComponentEdges_Moments] = analyse_ComponentEdges(data,dir_ref);
 
 %==Post-Processing & Export==%
 datafilename = [dir_ref,'/Distributions.mat'];
@@ -114,6 +114,18 @@ Analysis = struct(  'ActiveLinks_FitTool',ActiveLinks_FitTool,...
                     'ComponentEdges_Moments',ComponentEdges_Moments,...
                     'ComponentEdges_MLE',ComponentEdges_MLE,...
                     'NumberPeople',num_people);
-
+                
+data2global = struct('ActiveLinks_data',ActiveLinks_data,...
+                    'InteractionTimes_data',InteractionTimes_data,...
+                    'ActivityPotential_data',ActivityPotential_data,...
+                    'NoContactTimes_data',NoContactTimes_data,...
+                    'NodesActive_data',NodesActive_data,...
+                    'Components_data',Components_data,...
+                    'Clustering_data',Clustering_data,...
+                    'ComponentNodes_data',ComponentNodes_data,...
+                    'ComponentEdges_data',ComponentEdges_data,...
+                    'NumberPeople',num_people);
+                 
+[mins,maxs] = dataMinMax(Analysis);                
 analysis2latex(Analysis,dir_ref);
 end

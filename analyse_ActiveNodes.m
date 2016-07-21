@@ -1,4 +1,6 @@
-function [FitTool,MLE,Moments] = analyse_ActiveNodes(data,dir_ref)
+function [data2global,FitTool,MLE,Moments] = analyse_ActiveNodes(data,dir_ref)
+
+cutExtreme = 1;
 
 num_times = size(unique(data(:,1)),1);
 data_length = size(data(:,1),1);
@@ -22,8 +24,9 @@ parfor m=1:num_times
     nodes(m) = sum(thisactive)/num_people;
 end
 
-FitTool = buildStruc_ExpGamRayLN_FitTool(nodes,dir_ref,'ActiveNodes','Percentage of Nodes Active');
-MLE = buildStruc_ExpGamRayLN_MLE(nodes,dir_ref,'ActiveNodes','Percentage of Nodes Active');
-Moments = buildStruc_ExpGamRayLN_Moments(nodes,dir_ref,'ActiveNodes','Percentage of Nodes Active');
+FitTool = buildStruc_ExpGamRayLN_FitTool(nodes,dir_ref,'ActiveNodes','Fraction of Nodes Active',cutExtreme);
+MLE = buildStruc_ExpGamRayLN_MLE(nodes,dir_ref,'ActiveNodes','Fraction of Nodes Active',cutExtreme);
+Moments = buildStruc_ExpGamRayLN_Moments(nodes,dir_ref,'ActiveNodes','Fraction of Nodes Active',cutExtreme);
 
+data2global = nodes;
 end

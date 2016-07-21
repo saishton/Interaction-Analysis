@@ -1,6 +1,5 @@
-function [Structure] = buildStruc_ExpMLGPWei_MLE(data,dir_ref,property_title,graph_title)
+function [Structure] = buildStruc_ExpMLGPWei_MLE(data,dir_ref,property_title,graph_title,cutExtreme)
 
-cutExtreme = 3;
 MC_Power = 6;
 
 %==Prepare data==%

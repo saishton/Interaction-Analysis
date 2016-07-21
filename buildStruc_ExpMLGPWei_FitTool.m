@@ -1,6 +1,5 @@
-function [Structure] = buildStruc_ExpMLGPWei_FitTool(data,dir_ref,property_title,graph_title)
+function [Structure] = buildStruc_ExpMLGPWei_FitTool(data,dir_ref,property_title,graph_title,cutExtreme)
 
-cutExtreme = 3;
 MC_Power = 6;
 MC_Power_ML = 3;
 

@@ -24,7 +24,7 @@ Wsq = sum(CvM_vec)+(1/(12*n));
 V = Dplu+Dmin;
 
 WatMod = n*(mean(Z) - 0.5)^2;
-Usq = Wsq-WatMod;
+Usq = abs(Wsq-WatMod);
 
 Zswitch = flipud(Z);
 AD_vec = (2*middlecdf).*(log(Z)+log(1-Zswitch));
