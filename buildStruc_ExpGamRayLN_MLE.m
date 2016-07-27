@@ -1,4 +1,4 @@
-function [Structure] = buildStruc_ExpGamRayLN_MLE(data,dir_ref,property_title,graph_title,cutExtreme)
+function [Structure] = buildStruc_ExpGamRayLN_MLE(data,dir_ref,property_title,graph_title,cutExtreme,Ymin)
 
 MC_Power = 6;
 
@@ -17,7 +17,7 @@ test_data = sort(dataMod)';
 
 %==Perform MLEs==%
 mod_test_data = test_data;
-mod_test_data(mod_test_data==0)=1E-99;
+mod_test_data(mod_test_data==0)=[];
 
 phat_ex = mle(mod_test_data,'distribution','Exponential');
 phat_gm = mle(mod_test_data,'distribution','Gamma');
@@ -62,7 +62,7 @@ set(gca,'XScale','log');
 set(gca,'YScale','log');
 xlabel(graph_title);
 ylabel('CCDF');
-axis([-inf,inf,1E-5,1E0]);
+axis([-inf,inf,Ymin,1E0]);
 legend('Data','Exponential','Gamma','Rayleigh','Log-Normal','Location','southwest');
 imagefilename = [dir_ref,'/',property_title,'_MLE.png'];
 print(imagefilename,'-dpng')

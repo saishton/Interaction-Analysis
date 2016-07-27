@@ -30,14 +30,11 @@ GP3 = linspace(mins(6),maxs(6),numSplits);
 WB1 = linspace(mins(7),maxs(7),numSplits);
 WB2 = linspace(mins(8),maxs(8),numSplits);
 
-EX_BestStats = Inf(1,5);
-EX_Stats = zeros(5,5);
-EX1_BestCoords = zeros(1,5);
-for p=1:numSplits
+EX_AllStats = Inf(numSplits,5);
+parfor p=1:numSplits
     thisEX1 = EX1(p);
-    EX1_thisCoord = thisEX1*ones(1,5);
     thisStats = zeros(numData,5);
-    parfor j=1:numData
+    for j=1:numData
         thisName = fieldNames{j};
         thisData = test_data.(thisName);
         z = expcdf(thisData,thisEX1);
@@ -49,24 +46,23 @@ for p=1:numSplits
     else
         thisSum = thisStats;
     end
-    EX1_BestCoords(thisSum<EX_BestStats) = EX1_thisCoord(thisSum<EX_BestStats);
-    fullSum = ones(5,1)*thisSum;
-    EX_Stats(thisSum<EX_BestStats,:) = fullSum(thisSum<EX_BestStats,:);
-    EX_BestStats = min(EX_BestStats,thisSum);
+    EX_AllStats(p,:) = thisSum;
+end
+[EX_BestStats,idx] = min(EX_AllStats);
+EX_Stats = zeros(5,5);
+EX1_BestCoords = zeros(1,5);
+parfor i=1:5
+    EX_Stats(i,:) = EX_AllStats(idx(i),:);
+    EX1_BestCoords(i) = EX1(idx(i));
 end
 
-ML_BestStats = Inf(1,5);
-ML_Stats = zeros(5,5);
-ML1_BestCoords = zeros(1,5);
-ML2_BestCoords = zeros(1,5);
+ML_AllStats = Inf(numSplits*numSplits,5);
 for p=1:numSplits
     thisML1 = ML1(p);
-    for q=1:numSplits
+    parfor q=1:numSplits
         thisML2 = ML2(q);
-        ML1_thisCoord = thisML1*ones(1,5);
-        ML2_thisCoord = thisML2*ones(1,5);
         thisStats = zeros(numData,5);
-        parfor j=1:numData
+        for j=1:numData
             thisName = fieldNames{j};
             thisData = test_data.(thisName);
             z = ones(length(thisData),1)-mlf(thisML1,1,-thisML2*thisData.^thisML1,6);
@@ -78,33 +74,40 @@ for p=1:numSplits
         else
             thisSum = thisStats;
         end
-        ML1_BestCoords(thisSum<ML_BestStats) = ML1_thisCoord(thisSum<ML_BestStats);
-        ML2_BestCoords(thisSum<ML_BestStats) = ML2_thisCoord(thisSum<ML_BestStats);
-        fullSum = ones(5,1)*thisSum;
-        ML_Stats(thisSum<ML_BestStats,:) = fullSum(thisSum<ML_BestStats,:);
-        ML_BestStats = min(ML_BestStats,thisSum);
+        pML_AllStats(q,:) = thisSum;
     end
+    low = (p-1)*numSplits+1;
+    high = p*numSplits;
+    ML_AllStats(low:high,:) = pML_AllStats;
+end
+[ML_BestStats,idx] = min(ML_AllStats);
+ML_Stats = zeros(5,5);
+ML1_BestCoords = zeros(1,5);
+ML2_BestCoords = zeros(1,5);
+parfor i=1:5
+    ML_Stats(i,:) = ML_AllStats(idx(i),:);
+    p = floor(idx(i)/numSplits)+1;
+    q = rem(idx(i),numSplits);
+    if q==0
+        p = p-1;
+        q = numSplits;
+    end
+    ML1_BestCoords(i) = ML1(p);
+    ML2_BestCoords(i) = ML2(q);
 end
 
-GP_BestStats = Inf(1,5);
-GP_Stats = zeros(5,5);
-GP1_BestCoords = zeros(1,5);
-GP2_BestCoords = zeros(1,5);
-GP3_BestCoords = zeros(1,5);
+GP_AllStats = Inf(numSplits^3,5);
 for p=1:numSplits
     thisGP1 = GP1(p);
     for q=1:numSplits
         thisGP2 = GP2(q);
-        for r = 1:numSplits
+        parfor r = 1:numSplits
             thisGP3 = GP3(r);
-            GP1_thisCoord = thisGP1*ones(1,5);
-            GP2_thisCoord = thisGP2*ones(1,5);
-            GP3_thisCoord = thisGP3*ones(1,5);
             thisStats = zeros(numData,5);
-            parfor j=1:numData
+            for j=1:numData
                 thisName = fieldNames{j};
                 thisData = test_data.(thisName);
-                z = raylcdf(thisData,thisGP1);
+                z = gpcdf(thisData,thisGP1);
                 thisTest = testStatistics(thisData,z);
                 thisStats(j,:) = [thisTest.Kolmogorov_D,thisTest.Cramer_von_Mises,thisTest.Kuiper,thisTest.Watson,thisTest.Anderson_Darling];
             end
@@ -113,28 +116,47 @@ for p=1:numSplits
             else
                 thisSum = thisStats;
             end
-            GP1_BestCoords(thisSum<GP_BestStats) = GP1_thisCoord(thisSum<GP_BestStats);
-            GP2_BestCoords(thisSum<GP_BestStats) = GP2_thisCoord(thisSum<GP_BestStats);
-            GP3_BestCoords(thisSum<GP_BestStats) = GP3_thisCoord(thisSum<GP_BestStats);
-            fullSum = ones(5,1)*thisSum;
-            GP_Stats(thisSum<GP_BestStats,:) = fullSum(thisSum<GP_BestStats,:);
-            GP_BestStats = min(GP_BestStats,thisSum);
+            rGP_AllStats(r,:) = thisSum;
         end
+        low = (q-1)*numSplits+1;
+        high = q*numSplits;
+        qGP_AllStats(low:high,:) = rGP_AllStats;
     end
+    low = (p-1)*(numSplits^2)+1;
+    high = p*(numSplits^2);
+    GP_AllStats(low:high,:) = qGP_AllStats;
+end
+[GP_BestStats,idx] = min(GP_AllStats);
+GP_Stats = zeros(5,5);
+GP1_BestCoords = zeros(1,5);
+GP2_BestCoords = zeros(1,5);
+GP3_BestCoords = zeros(1,5);
+parfor i=1:5
+    GP_Stats(i,:) = GP_AllStats(idx(i),:);
+    p = floor(idx(i)/(numSplits^2))+1;
+    qr = rem(idx(i),(numSplits^2));
+    if qr==0
+        p = p-1;
+        qr = numSplits^2;
+    end
+    q = floor(qr/numSplits)+1;
+    r = rem(qr,numSplits);
+    if r==0
+        q = p-1;
+        r = numSplits;
+    end
+    GP1_BestCoords(i) = GP1(p);
+    GP2_BestCoords(i) = GP2(q);
+    GP3_BestCoords(i) = GP3(r);
 end
 
-WB_BestStats = Inf(1,5);
-WB_Stats = zeros(5,5);
-WB1_BestCoords = zeros(1,5);
-WB2_BestCoords = zeros(1,5);
+WB_AllStats = Inf(numSplits*numSplits,5);
 for p=1:numSplits
     thisWB1 = WB1(p);
-    for q=1:numSplits
+    parfor q=1:numSplits
         thisWB2 = WB2(q);
-        WB1_thisCoord = thisWB1*ones(1,5);
-        WB2_thisCoord = thisWB2*ones(1,5);
         thisStats = zeros(numData,5);
-        parfor j=1:numData
+        for j=1:numData
             thisName = fieldNames{j};
             thisData = test_data.(thisName);
             z = wblcdf(thisData,thisWB1,thisWB2);
@@ -146,12 +168,26 @@ for p=1:numSplits
         else
             thisSum = thisStats;
         end
-        WB1_BestCoords(thisSum<WB_BestStats) = WB1_thisCoord(thisSum<WB_BestStats);
-        WB2_BestCoords(thisSum<WB_BestStats) = WB2_thisCoord(thisSum<WB_BestStats);
-        fullSum = ones(5,1)*thisSum;
-        WB_Stats(thisSum<WB_BestStats,:) = fullSum(thisSum<WB_BestStats,:);
-        WB_BestStats = min(WB_BestStats,thisSum);
+        pWB_AllStats(q,:) = thisSum;
     end
+    low = (p-1)*numSplits+1;
+    high = p*numSplits;
+    WB_AllStats(low:high,:) = pWB_AllStats;
+end
+[WB_BestStats,idx] = min(WB_AllStats);
+WB_Stats = zeros(5,5);
+WB1_BestCoords = zeros(1,5);
+WB2_BestCoords = zeros(1,5);
+parfor i=1:5
+    WB_Stats(i,:) = WB_AllStats(idx(i),:);
+    p = floor(idx(i)/numSplits)+1;
+    q = rem(idx(i),numSplits);
+    if q==0
+        p = p-1;
+        q = numSplits;
+    end
+    WB1_BestCoords(i) = WB1(p);
+    WB2_BestCoords(i) = WB2(q);
 end
 
 statsMatrix = [EX_BestStats;ML_BestStats;GP_BestStats;WB_BestStats];

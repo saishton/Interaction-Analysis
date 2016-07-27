@@ -1,5 +1,7 @@
 function [data2global,FitTool,MLE,Moments] = analyse_ActivityPotential(data,dir_ref)
 
+Ymin = 1E-1;
+
 cutExtreme = 3;
 
 number_rows = size(data,1);
@@ -40,9 +42,9 @@ while j<number_rows+1
 end
 activityPot = 2*interactions/sum(interactions);
 
-FitTool = buildStruc_ExpGamRayLN_FitTool(activityPot,dir_ref,'ActivityPotential','Activity Potential',cutExtreme);
-MLE = buildStruc_ExpGamRayLN_MLE(activityPot,dir_ref,'ActivityPotential','Activity Potential',cutExtreme);
-Moments = buildStruc_ExpGamRayLN_Moments(activityPot,dir_ref,'ActivityPotential','Activity Potential',cutExtreme);
+FitTool = buildStruc_ExpGamRayLN_FitTool(activityPot,dir_ref,'ActivityPotential','Activity Potential',cutExtreme,Ymin);
+MLE = buildStruc_ExpGamRayLN_MLE(activityPot,dir_ref,'ActivityPotential','Activity Potential',cutExtreme,Ymin);
+Moments = buildStruc_ExpGamRayLN_Moments(activityPot,dir_ref,'ActivityPotential','Activity Potential',cutExtreme,Ymin);
 
 data2global = activityPot;
 end

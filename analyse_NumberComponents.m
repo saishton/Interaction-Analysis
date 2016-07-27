@@ -1,5 +1,7 @@
 function [data2global,FitTool,MLE,Moments] = analyse_NumberComponents(data,dir_ref)
 
+Ymin = 1E-4;
+
 cutExtreme = 0;
 
 num_times = size(unique(data(:,1)),1);
@@ -27,9 +29,9 @@ thisCompCount = length(thisComp);
 components(m) = thisCompCount;
 end
 
-FitTool = buildStruc_ExpGamRayLN_FitTool(components,dir_ref,'NumberComponents','Number of Components',cutExtreme);
-MLE = buildStruc_ExpGamRayLN_MLE(components,dir_ref,'NumberComponents','Number of Components',cutExtreme);
-Moments = buildStruc_ExpGamRayLN_Moments(components,dir_ref,'NumberComponents','Number of Components',cutExtreme);
+FitTool = buildStruc_ExpGamRayLN_FitTool(components,dir_ref,'NumberComponents','Number of Components',cutExtreme,Ymin);
+MLE = buildStruc_ExpGamRayLN_MLE(components,dir_ref,'NumberComponents','Number of Components',cutExtreme,Ymin);
+Moments = buildStruc_ExpGamRayLN_Moments(components,dir_ref,'NumberComponents','Number of Components',cutExtreme,Ymin);
 
 data2global = components;
 end

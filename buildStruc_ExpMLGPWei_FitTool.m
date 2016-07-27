@@ -1,4 +1,4 @@
-function [Structure] = buildStruc_ExpMLGPWei_FitTool(data,dir_ref,property_title,graph_title,cutExtreme)
+function [Structure] = buildStruc_ExpMLGPWei_FitTool(data,dir_ref,property_title,graph_title,cutExtreme,Ymin)
 
 MC_Power = 6;
 MC_Power_ML = 3;
@@ -89,7 +89,7 @@ set(gca,'XScale','log');
 set(gca,'YScale','log');
 xlabel(graph_title);
 ylabel('CCDF');
-axis([-inf,inf,1E-5,1E0]);
+axis([-inf,inf,Ymin,1E0]);
 legend('Data','Exponential','Mittag Leffler','Gen. Pareto','Weibull','Location','southwest');
 imagefilename = [dir_ref,'/',property_title,'_FitTool.png'];
 print(imagefilename,'-dpng')

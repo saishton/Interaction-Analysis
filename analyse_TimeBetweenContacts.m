@@ -1,5 +1,7 @@
 function [data2global,FitTool,MLE,Moments] = analyse_TimeBetweenContacts(data,dir_ref)
 
+Ymin = 1E-4;
+
 cutExtreme = 3;
 
 step = 20;
@@ -41,9 +43,9 @@ endIndex = find(dlong > 0)-1;
 nocontact = endIndex-startIndex+1;
 nocontact = nocontact*20;
 
-FitTool = buildStruc_ExpGamRayLN_FitTool(nocontact,dir_ref,'TimeBetweenContacts','Length of Time Between Contacts',cutExtreme);
-MLE = buildStruc_ExpGamRayLN_MLE(nocontact,dir_ref,'TimeBetweenContacts','Length of Time Between Contacts',cutExtreme);
-Moments = buildStruc_ExpGamRayLN_Moments(nocontact,dir_ref,'TimeBetweenContacts','Length of Time Between Contacts',cutExtreme);
+FitTool = buildStruc_ExpGamRayLN_FitTool(nocontact,dir_ref,'TimeBetweenContacts','Length of Time Between Contacts',cutExtreme,Ymin);
+MLE = buildStruc_ExpGamRayLN_MLE(nocontact,dir_ref,'TimeBetweenContacts','Length of Time Between Contacts',cutExtreme,Ymin);
+Moments = buildStruc_ExpGamRayLN_Moments(nocontact,dir_ref,'TimeBetweenContacts','Length of Time Between Contacts',cutExtreme,Ymin);
 
 data2global = nocontact;
 end

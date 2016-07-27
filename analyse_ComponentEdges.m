@@ -1,5 +1,7 @@
 function [data2global,FitTool,MLE,Moments] = analyse_ComponentEdges(data,dir_ref)
 
+Ymin = 1E-1;
+
 cutExtreme = 3;
 
 num_times = size(unique(data(:,1)),1);
@@ -48,9 +50,9 @@ end
 compEdgeFracs = rawFracEdges(:)';
 compEdgeFracs(compEdgeFracs==0) = [];
 
-FitTool = buildStruc_ExpGamRayLN_FitTool(compEdgeFracs,dir_ref,'ComponentEdges','Fraction of Edges Active per Component',cutExtreme);
-MLE = buildStruc_ExpGamRayLN_MLE(compEdgeFracs,dir_ref,'ComponentEdges','Fraction of Edges Active per Component',cutExtreme);
-Moments = buildStruc_ExpGamRayLN_Moments(compEdgeFracs,dir_ref,'ComponentEdges','Fraction of Edges Active per Component',cutExtreme);
+FitTool = buildStruc_ExpGamRayLN_FitTool(compEdgeFracs,dir_ref,'ComponentEdges','Fraction of Edges Active per Component',cutExtreme,Ymin);
+MLE = buildStruc_ExpGamRayLN_MLE(compEdgeFracs,dir_ref,'ComponentEdges','Fraction of Edges Active per Component',cutExtreme,Ymin);
+Moments = buildStruc_ExpGamRayLN_Moments(compEdgeFracs,dir_ref,'ComponentEdges','Fraction of Edges Active per Component',cutExtreme,Ymin);
 
 data2global = compEdgeFracs;
 end

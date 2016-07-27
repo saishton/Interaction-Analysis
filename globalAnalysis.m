@@ -81,3 +81,15 @@ Global.Components = globalFit_ExpGamRayLN(Components,mins.Components,maxs.Compon
 Global.Clustering = globalFit_ExpGamRayLN(Clustering,mins.Clustering,maxs.Clustering,numSplits);
 Global.ComponentNodes = globalFit_ExpGamRayLN(ComponentNodes,mins.ComponentNodes,maxs.ComponentNodes,numSplits);
 Global.ComponentEdges = globalFit_ExpGamRayLN(ComponentEdges,mins.ComponentEdges,maxs.ComponentEdges,numSplits);
+
+global_plot(ActiveLinks,Global.ActiveLinks,dir_ref,'ActiveEdges','Fraction of Edges Active',3,1E-3);
+global_plot(InteractionTimes,Global.InteractionTimes,dir_ref,'InteractionTimes','Length of Interaction',3,1E-3);
+global_plot(ActivityPotential,Global.ActivityPotential,dir_ref,'ActiveEdges','Fraction of Edges Active',3,1E-1);
+global_plot(NoContactTimes,Global.NoContactTimes,dir_ref,'TimeBetweenContacts','Length of Time Between Contacts',3,1E-4);
+global_plot(NodesActive,Global.NodesActive,dir_ref,'ActiveNodes','Fraction of Nodes Active',1,1E-4);
+global_plot(Components,Global.Components,dir_ref,'NumberComponents','Number of Components',0,1E-4);
+global_plot(Clustering,Global.Clustering,dir_ref,'GlobalClusteringCoeff','Global Clustering Coefficient',0,1E-2);
+global_plot(ComponentNodes,Global.ComponentNodes,dir_ref,'ComponentNodes','Fraction of Nodes per Component',1,1E-1);
+global_plot(ComponentEdges,Global.ComponentEdges,dir_ref,'ComponentEdges','Fraction of Edges Active per Component',3,1E-1);
+
+%LATEX

@@ -27,14 +27,11 @@ RL1 = linspace(mins(4),maxs(4),numSplits);
 LN1 = linspace(mins(5),maxs(5),numSplits);
 LN2 = linspace(mins(6),maxs(6),numSplits);
 
-EX_BestStats = Inf(1,5);
-EX_Stats = zeros(5,5);
-EX1_BestCoords = zeros(1,5);
-for p=1:numSplits
+EX_AllStats = Inf(numSplits,5);
+parfor p=1:numSplits
     thisEX1 = EX1(p);
-    EX1_thisCoord = thisEX1*ones(1,5);
     thisStats = zeros(numData,5);
-    parfor j=1:numData
+    for j=1:numData
         thisName = fieldNames{j};
         thisData = test_data.(thisName);
         z = expcdf(thisData,thisEX1);
@@ -46,24 +43,23 @@ for p=1:numSplits
     else
         thisSum = thisStats;
     end
-    EX1_BestCoords(thisSum<EX_BestStats) = EX1_thisCoord(thisSum<EX_BestStats);
-    fullSum = ones(5,1)*thisSum;
-    EX_Stats(thisSum<EX_BestStats,:) = fullSum(thisSum<EX_BestStats,:);
-    EX_BestStats = min(EX_BestStats,thisSum);
+    EX_AllStats(p,:) = thisSum;
+end
+[EX_BestStats,idx] = min(EX_AllStats);
+EX_Stats = zeros(5,5);
+EX1_BestCoords = zeros(1,5);
+parfor i=1:5
+    EX_Stats(i,:) = EX_AllStats(idx(i),:);
+    EX1_BestCoords(i) = EX1(idx(i));
 end
 
-GM_BestStats = Inf(1,5);
-GM_Stats = zeros(5,5);
-GM1_BestCoords = zeros(1,5);
-GM2_BestCoords = zeros(1,5);
+GM_AllStats = Inf(numSplits*numSplits,5);
 for p=1:numSplits
     thisGM1 = GM1(p);
-    for q=1:numSplits
+    parfor q=1:numSplits
         thisGM2 = GM2(q);
-        GM1_thisCoord = thisGM1*ones(1,5);
-        GM2_thisCoord = thisGM2*ones(1,5);
         thisStats = zeros(numData,5);
-        parfor j=1:numData
+        for j=1:numData
             thisName = fieldNames{j};
             thisData = test_data.(thisName);
             z = gamcdf(thisData,thisGM1,thisGM2);
@@ -75,22 +71,33 @@ for p=1:numSplits
         else
             thisSum = thisStats;
         end
-        GM1_BestCoords(thisSum<GM_BestStats) = GM1_thisCoord(thisSum<GM_BestStats);
-        GM2_BestCoords(thisSum<GM_BestStats) = GM2_thisCoord(thisSum<GM_BestStats);
-        fullSum = ones(5,1)*thisSum;
-        GM_Stats(thisSum<GM_BestStats,:) = fullSum(thisSum<GM_BestStats,:);
-        GM_BestStats = min(GM_BestStats,thisSum);
+        pGM_AllStats(q,:) = thisSum;
     end
+    low = (p-1)*numSplits+1;
+    high = p*numSplits;
+    GM_AllStats(low:high,:) = pGM_AllStats;
+end
+[GM_BestStats,idx] = min(GM_AllStats);
+GM_Stats = zeros(5,5);
+GM1_BestCoords = zeros(1,5);
+GM2_BestCoords = zeros(1,5);
+parfor i=1:5
+    GM_Stats(i,:) = GM_AllStats(idx(i),:);
+    p = floor(idx(i)/numSplits)+1;
+    q = rem(idx(i),numSplits);
+    if q==0
+        p = p-1;
+        q = numSplits;
+    end
+    GM1_BestCoords(i) = ML1(p);
+    GM2_BestCoords(i) = ML2(q);
 end
 
-RL_BestStats = Inf(1,5);
-RL_Stats = zeros(5,5);
-RL1_BestCoords = zeros(1,5);
-for p=1:numSplits
+RL_AllStats = Inf(numSplits,5);
+parfor p=1:numSplits
     thisRL1 = RL1(p);
-    RL1_thisCoord = thisRL1*ones(1,5);
     thisStats = zeros(numData,5);
-    parfor j=1:numData
+    for j=1:numData
         thisName = fieldNames{j};
         thisData = test_data.(thisName);
         z = raylcdf(thisData,thisRL1);
@@ -102,27 +109,26 @@ for p=1:numSplits
     else
         thisSum = thisStats;
     end
-    RL1_BestCoords(thisSum<RL_BestStats) = RL1_thisCoord(thisSum<RL_BestStats);
-    fullSum = ones(5,1)*thisSum;
-    RL_Stats(thisSum<RL_BestStats,:) = fullSum(thisSum<RL_BestStats,:);
-    RL_BestStats = min(RL_BestStats,thisSum);
+    RL_AllStats(p,:) = thisSum;
+end
+[RL_BestStats,idx] = min(RL_AllStats);
+RL_Stats = zeros(5,5);
+RL1_BestCoords = zeros(1,5);
+parfor i=1:5
+    RL_Stats(i,:) = RL_AllStats(idx(i),:);
+    RL1_BestCoords(i) = RL1(idx(i));
 end
 
-LN_BestStats = Inf(1,5);
-LN_Stats = zeros(5,5);
-LN1_BestCoords = zeros(1,5);
-LN2_BestCoords = zeros(1,5);
+LN_AllStats = Inf(numSplits*numSplits,5);
 for p=1:numSplits
     thisLN1 = LN1(p);
-    for q=1:numSplits
+    parfor q=1:numSplits
         thisLN2 = LN2(q);
-        LN1_thisCoord = thisLN1*ones(1,5);
-        LN2_thisCoord = thisLN2*ones(1,5);
         thisStats = zeros(numData,5);
-        parfor j=1:numData
+        for j=1:numData
             thisName = fieldNames{j};
             thisData = test_data.(thisName);
-            z = gamcdf(thisData,thisLN1,thisLN2);
+            z = logncdf(thisData,thisLN1,thisLN2);
             thisTest = testStatistics(thisData,z);
             thisStats(j,:) = [thisTest.Kolmogorov_D,thisTest.Cramer_von_Mises,thisTest.Kuiper,thisTest.Watson,thisTest.Anderson_Darling];
         end
@@ -131,12 +137,26 @@ for p=1:numSplits
         else
             thisSum = thisStats;
         end
-        LN1_BestCoords(thisSum<LN_BestStats) = LN1_thisCoord(thisSum<LN_BestStats);
-        LN2_BestCoords(thisSum<LN_BestStats) = LN2_thisCoord(thisSum<LN_BestStats);
-        fullSum = ones(5,1)*thisSum;
-        LN_Stats(thisSum<LN_BestStats,:) = fullSum(thisSum<LN_BestStats,:);
-        LN_BestStats = min(LN_BestStats,thisSum);
+        pLN_AllStats(q,:) = thisSum;
     end
+    low = (p-1)*numSplits+1;
+    high = p*numSplits;
+    LN_AllStats(low:high,:) = pLN_AllStats;
+end
+[LN_BestStats,idx] = min(LN_AllStats);
+LN_Stats = zeros(5,5);
+LN1_BestCoords = zeros(1,5);
+LN2_BestCoords = zeros(1,5);
+parfor i=1:5
+    LN_Stats(i,:) = LN_AllStats(idx(i),:);
+    p = floor(idx(i)/numSplits)+1;
+    q = rem(idx(i),numSplits);
+    if q==0
+        p = p-1;
+        q = numSplits;
+    end
+    LN1_BestCoords(i) = ML1(p);
+    LN2_BestCoords(i) = ML2(q);
 end
 
 statsMatrix = [EX_BestStats;GM_BestStats;RL_BestStats;LN_BestStats];
