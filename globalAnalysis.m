@@ -1,4 +1,4 @@
-function [] = globalAnalysis(inputFolder)
+function [Global] = globalAnalysis(inputFolder)
 
 numSplits = 1E2;
 
@@ -92,4 +92,12 @@ global_plot(Clustering,Global.Clustering,dir_ref,'GlobalClusteringCoeff','Global
 global_plot(ComponentNodes,Global.ComponentNodes,dir_ref,'ComponentNodes','Fraction of Nodes per Component',1,1E-1);
 global_plot(ComponentEdges,Global.ComponentEdges,dir_ref,'ComponentEdges','Fraction of Edges Active per Component',3,1E-1);
 
-%LATEX
+ga2latex(Global.ActiveLinks,dir_ref,'Active Links');
+ga2latex(Global.InteractionTimes,dir_ref,'Int. Times');
+ga2latex(Global.ActivityPotential,dir_ref,'Activity Pot.');
+ga2latex(Global.NoContactTimes,dir_ref,'Time Between Contacts');
+ga2latex(Global.NodesActive,dir_ref,'Active Nodes');
+ga2latex(Global.Components,dir_ref,'Number of Comp.');
+ga2latex(Global.Clustering,dir_ref,'GCC');
+ga2latex(Global.ComponentNodes,dir_ref,'Active Nodes per Comp.');
+ga2latex(Global.ComponentEdges,dir_ref,'Active Edges per Comp.');

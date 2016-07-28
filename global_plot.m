@@ -3,7 +3,7 @@ function [] = global_plot(data,bestFits,dir_ref,property_title,graph_title,cutEx
 fieldNames = fieldnames(data);
 numData = length(fieldNames);
 structureNames = {'KolD_Pri';'CvM_Pri';'Kuiper_Pri';'Watson_Pri';'AD_Pri'};
-labels = {'Data','Priority: Kolmogorov-D','Priority: Cramer-von-Mises','Priority: Kuiper','Priority: Watson','Priority: Anderson-Darling');
+labels = {'Data','Priority: Kolmogorov-D','Priority: Cramer-von-Mises','Priority: Kuiper','Priority: Watson','Priority: Anderson-Darling'};
 
 splices = 1000;
 Xmax = 0;
