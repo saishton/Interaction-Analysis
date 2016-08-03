@@ -31,8 +31,11 @@ ccdf_gp = gpcdf(X,gp_k,gp_sigma,gp_theta,'upper');
 z_ex = expcdf(test_data,ex_lambda);
 z_gp = gpcdf(test_data,gp_k,gp_sigma,gp_theta);
 
-stats_ex = testStatistics(test_data,z_ex);
-stats_gp = testStatistics(test_data,z_gp);
+zp_ex = exppdf(test_data,ex_lambda);
+zp_gp = gppdf(test_data,gp_k,gp_sigma,gp_theta);
+
+stats_ex = testStatistics(test_data,z_ex,zp_ex);
+stats_gp = testStatistics(test_data,z_gp,zp_gp);
 
 %==Plotting==%
 fig = figure();

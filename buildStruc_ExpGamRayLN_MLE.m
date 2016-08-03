@@ -45,10 +45,15 @@ z_gm = gamcdf(test_data,gm_a,gm_b);
 z_rl = raylcdf(test_data,rl_sigma);
 z_ln = logncdf(test_data,ln_mu,ln_sigma);
 
-stats_ex = testStatistics(test_data,z_ex);
-stats_gm = testStatistics(test_data,z_gm);
-stats_rl = testStatistics(test_data,z_rl);
-stats_ln = testStatistics(test_data,z_ln);
+zp_ex = exppdf(test_data,ex_lambda);
+zp_gm = gampdf(test_data,gm_a,gm_b);
+zp_rl = raylpdf(test_data,rl_sigma);
+zp_ln = lognpdf(test_data,ln_mu,ln_sigma);
+
+stats_ex = testStatistics(test_data,z_ex,zp_ex);
+stats_gm = testStatistics(test_data,z_gm,zp_gm);
+stats_rl = testStatistics(test_data,z_rl,zp_rl);
+stats_ln = testStatistics(test_data,z_ln,zp_ln);
 
 %==Plotting==%
 fig = figure();

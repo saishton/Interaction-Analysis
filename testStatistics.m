@@ -1,4 +1,4 @@
-function fit = testStatistics(X,Z)
+function fit = testStatistics(X,Z,Zprime)
 
 n = length(X);
 uni = unique(X);
@@ -13,6 +13,9 @@ fullecdf = fullecdf';
 lowerecdf = fullecdf(1:n);
 upperecdf = fullecdf(2:n+1);
 middlecdf = (lowerecdf+upperecdf)/2;
+
+P = (upperecdf - lowerecdf)';
+Q = Zprime';
 
 Dplu = max(lowerecdf-Z);
 Dmin = max(Z-upperecdf);
@@ -35,9 +38,19 @@ elseif Asq == -inf
     Asq = -10^50;
 end
 
+P(P==inf) = 10^50;
+P(P==-inf) = -10^50;
+Q(Q==inf) = 10^50;
+Q(Q==-inf) = -10^50;
+
+KL = KLDiv(P,Q);
+JS = JSDiv(P,Q);
+
 fit = struct(   'Kolmogorov_D',D,...
                 'Cramer_von_Mises',Wsq,...
                 'Kuiper',V,...
                 'Watson',Usq,...
-                'Anderson_Darling',Asq);
+                'Anderson_Darling',Asq,...
+                'Kullback_Leibler',KL,...
+                'Jensen_Shannon',JS);
 end

@@ -72,10 +72,15 @@ z_ml = ones(length(test_data),1)-mlf(ml_beta,1,-ml_gamma*test_data.^ml_beta,6);
 z_gp = gpcdf(test_data,gp_k,gp_sigma,gp_theta);
 z_wb = wblcdf(test_data,wb_a,wb_b);
 
-stats_ex = testStatistics(test_data,z_ex);
-stats_ml = testStatistics(test_data,z_ml);
-stats_gp = testStatistics(test_data,z_gp);
-stats_wb = testStatistics(test_data,z_wb);
+zp_ex = exppdf(test_data,ex_lambda);
+zp_ml = (-ml_beta./test_data).*mlf(ml_beta,1,-ml_gamma*test_data.^ml_beta,6);
+zp_gp = gppdf(test_data,gp_k,gp_sigma,gp_theta);
+zp_wb = wblpdf(test_data,wb_a,wb_b);
+
+stats_ex = testStatistics(test_data,z_ex,zp_ex);
+stats_ml = testStatistics(test_data,z_ml,zp_ml);
+stats_gp = testStatistics(test_data,z_gp,zp_gp);
+stats_wb = testStatistics(test_data,z_wb,zp_wb);
 
 %==Plotting==%
 fig = figure();

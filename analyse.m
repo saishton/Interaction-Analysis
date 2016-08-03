@@ -127,5 +127,14 @@ data2global = struct('ActiveLinks_data',ActiveLinks_data,...
                     'NumberPeople',num_people);
                  
 [mins,maxs] = dataMinMax(Analysis);                
-analysis2latex(Analysis,dir_ref);
+
+la2latex(ActiveLinks_FitTool,ActiveLinks_MLE,ActiveLinks_Moments,num_people,dir_ref,'Active Links',1);
+la2latex(InteractionTimes_FitTool,InteractionTimes_MLE,InteractionTimes_Moments,num_people,dir_ref,'Int. Times',2);
+la2latex(ActivityPotential_FitTool,ActivityPotential_MLE,ActivityPotential_Moments,num_people,dir_ref,'Activity Pot.',1);
+la2latex(NoContactTimes_FitTool,NoContactTimes_MLE,NoContactTimes_Moments,num_people,dir_ref,'Time Between Contacts',1);
+la2latex(NodesActive_FitTool,NodesActive_MLE,NodesActive_Moments,num_people,dir_ref,'Active Nodes',1);
+la2latex(Components_FitTool,Components_MLE,Components_Moments,num_people,dir_ref,'Number of Comp.',1);
+la2latex(Clustering_FitTool,Clustering_MLE,Clustering_Moments,num_people,dir_ref,'GCC',1);
+la2latex(ComponentNodes_FitTool,ComponentNodes_MLE,ComponentNodes_Moments,num_people,dir_ref,'Active Nodes per Comp.',1);
+la2latex(ComponentEdges_FitTool,ComponentEdges_MLE,ComponentEdges_Moments,num_people,dir_ref,'Active Edges per Comp.',1);
 end

@@ -34,8 +34,11 @@ ccdf_wb = wblcdf(X,wb_a,wb_b,'upper');
 z_ex = expcdf(test_data,ex_lambda);
 z_wb = wblcdf(test_data,wb_a,wb_b);
 
-stats_ex = testStatistics(test_data,z_ex);
-stats_wb = testStatistics(test_data,z_wb);
+zp_ex = exppdf(test_data,ex_lambda);
+zp_wb = wblpdf(test_data,wb_a,wb_b);
+
+stats_ex = testStatistics(test_data,z_ex,zp_ex);
+stats_wb = testStatistics(test_data,z_wb,zp_wb);
 
 %==Plotting==%
 fig = figure();

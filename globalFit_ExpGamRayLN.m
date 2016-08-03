@@ -27,16 +27,17 @@ RL1 = linspace(mins(4),maxs(4),numSplits);
 LN1 = linspace(mins(5),maxs(5),numSplits);
 LN2 = linspace(mins(6),maxs(6),numSplits);
 
-EX_AllStats = Inf(numSplits,5);
+EX_AllStats = Inf(numSplits,7);
 parfor p=1:numSplits
     thisEX1 = EX1(p);
-    thisStats = zeros(numData,5);
+    thisStats = zeros(numData,7);
     for j=1:numData
         thisName = fieldNames{j};
         thisData = test_data.(thisName);
         z = expcdf(thisData,thisEX1);
-        thisTest = testStatistics(thisData,z);
-        thisStats(j,:) = [thisTest.Kolmogorov_D,thisTest.Cramer_von_Mises,thisTest.Kuiper,thisTest.Watson,thisTest.Anderson_Darling];
+        zprime = exppdf(thisData,thisEX1);
+        thisTest = testStatistics(thisData,z,zprime);
+        thisStats(j,:) = [thisTest.Kolmogorov_D,thisTest.Cramer_von_Mises,thisTest.Kuiper,thisTest.Watson,thisTest.Anderson_Darling,thisTest.Kullback_Leibler,thisTest.Jensen_Shannon];
     end
     if numData > 1
         thisSum = sum(thisStats);
@@ -46,25 +47,26 @@ parfor p=1:numSplits
     EX_AllStats(p,:) = thisSum;
 end
 [EX_BestStats,idx] = min(EX_AllStats);
-EX_Stats = zeros(5,5);
-EX1_BestCoords = zeros(1,5);
-parfor i=1:5
+EX_Stats = zeros(7,7);
+EX1_BestCoords = zeros(1,7);
+parfor i=1:7
     EX_Stats(i,:) = EX_AllStats(idx(i),:);
     EX1_BestCoords(i) = EX1(idx(i));
 end
 
-GM_AllStats = Inf(numSplits*numSplits,5);
+GM_AllStats = Inf(numSplits*numSplits,7);
 for p=1:numSplits
     thisGM1 = GM1(p);
     parfor q=1:numSplits
         thisGM2 = GM2(q);
-        thisStats = zeros(numData,5);
+        thisStats = zeros(numData,7);
         for j=1:numData
             thisName = fieldNames{j};
             thisData = test_data.(thisName);
             z = gamcdf(thisData,thisGM1,thisGM2);
-            thisTest = testStatistics(thisData,z);
-            thisStats(j,:) = [thisTest.Kolmogorov_D,thisTest.Cramer_von_Mises,thisTest.Kuiper,thisTest.Watson,thisTest.Anderson_Darling];
+            zprime = gampdf(thisData,thisGM1,thisGM2);
+            thisTest = testStatistics(thisData,z,zprime);
+            thisStats(j,:) = [thisTest.Kolmogorov_D,thisTest.Cramer_von_Mises,thisTest.Kuiper,thisTest.Watson,thisTest.Anderson_Darling,thisTest.Kullback_Leibler,thisTest.Jensen_Shannon];
         end
         if numData > 1
             thisSum = sum(thisStats);
@@ -78,10 +80,10 @@ for p=1:numSplits
     GM_AllStats(low:high,:) = pGM_AllStats;
 end
 [GM_BestStats,idx] = min(GM_AllStats);
-GM_Stats = zeros(5,5);
-GM1_BestCoords = zeros(1,5);
-GM2_BestCoords = zeros(1,5);
-parfor i=1:5
+GM_Stats = zeros(7,7);
+GM1_BestCoords = zeros(1,7);
+GM2_BestCoords = zeros(1,7);
+parfor i=1:7
     GM_Stats(i,:) = GM_AllStats(idx(i),:);
     p = floor(idx(i)/numSplits)+1;
     q = rem(idx(i),numSplits);
@@ -89,20 +91,21 @@ parfor i=1:5
         p = p-1;
         q = numSplits;
     end
-    GM1_BestCoords(i) = ML1(p);
-    GM2_BestCoords(i) = ML2(q);
+    GM1_BestCoords(i) = GM1(p);
+    GM2_BestCoords(i) = GM2(q);
 end
 
-RL_AllStats = Inf(numSplits,5);
+RL_AllStats = Inf(numSplits,7);
 parfor p=1:numSplits
     thisRL1 = RL1(p);
-    thisStats = zeros(numData,5);
+    thisStats = zeros(numData,7);
     for j=1:numData
         thisName = fieldNames{j};
         thisData = test_data.(thisName);
         z = raylcdf(thisData,thisRL1);
-        thisTest = testStatistics(thisData,z);
-        thisStats(j,:) = [thisTest.Kolmogorov_D,thisTest.Cramer_von_Mises,thisTest.Kuiper,thisTest.Watson,thisTest.Anderson_Darling];
+        zprime = raylpdf(thisData,thisRL1);
+        thisTest = testStatistics(thisData,z,zprime);
+        thisStats(j,:) = [thisTest.Kolmogorov_D,thisTest.Cramer_von_Mises,thisTest.Kuiper,thisTest.Watson,thisTest.Anderson_Darling,thisTest.Kullback_Leibler,thisTest.Jensen_Shannon];
     end
     if numData > 1
         thisSum = sum(thisStats);
@@ -112,25 +115,26 @@ parfor p=1:numSplits
     RL_AllStats(p,:) = thisSum;
 end
 [RL_BestStats,idx] = min(RL_AllStats);
-RL_Stats = zeros(5,5);
-RL1_BestCoords = zeros(1,5);
-parfor i=1:5
+RL_Stats = zeros(7,7);
+RL1_BestCoords = zeros(1,7);
+parfor i=1:7
     RL_Stats(i,:) = RL_AllStats(idx(i),:);
     RL1_BestCoords(i) = RL1(idx(i));
 end
 
-LN_AllStats = Inf(numSplits*numSplits,5);
+LN_AllStats = Inf(numSplits*numSplits,7);
 for p=1:numSplits
     thisLN1 = LN1(p);
     parfor q=1:numSplits
         thisLN2 = LN2(q);
-        thisStats = zeros(numData,5);
+        thisStats = zeros(numData,7);
         for j=1:numData
             thisName = fieldNames{j};
             thisData = test_data.(thisName);
             z = logncdf(thisData,thisLN1,thisLN2);
-            thisTest = testStatistics(thisData,z);
-            thisStats(j,:) = [thisTest.Kolmogorov_D,thisTest.Cramer_von_Mises,thisTest.Kuiper,thisTest.Watson,thisTest.Anderson_Darling];
+            zprime = lognpdf(thisData,thisLN1,thisLN2);
+            thisTest = testStatistics(thisData,z,zprime);
+            thisStats(j,:) = [thisTest.Kolmogorov_D,thisTest.Cramer_von_Mises,thisTest.Kuiper,thisTest.Watson,thisTest.Anderson_Darling,thisTest.Kullback_Leibler,thisTest.Jensen_Shannon];
         end
         if numData > 1
             thisSum = sum(thisStats);
@@ -144,10 +148,10 @@ for p=1:numSplits
     LN_AllStats(low:high,:) = pLN_AllStats;
 end
 [LN_BestStats,idx] = min(LN_AllStats);
-LN_Stats = zeros(5,5);
-LN1_BestCoords = zeros(1,5);
-LN2_BestCoords = zeros(1,5);
-parfor i=1:5
+LN_Stats = zeros(7,7);
+LN1_BestCoords = zeros(1,7);
+LN2_BestCoords = zeros(1,7);
+parfor i=1:7
     LN_Stats(i,:) = LN_AllStats(idx(i),:);
     p = floor(idx(i)/numSplits)+1;
     q = rem(idx(i),numSplits);
@@ -155,15 +159,15 @@ parfor i=1:5
         p = p-1;
         q = numSplits;
     end
-    LN1_BestCoords(i) = ML1(p);
-    LN2_BestCoords(i) = ML2(q);
+    LN1_BestCoords(i) = LN1(p);
+    LN2_BestCoords(i) = LN2(q);
 end
 
 statsMatrix = [EX_BestStats;GM_BestStats;RL_BestStats;LN_BestStats];
 [~,idx] = min(statsMatrix);
-structureNames = {'KolD_Pri';'CvM_Pri';'Kuiper_Pri';'Watson_Pri';'AD_Pri'};
+structureNames = {'KolD_Pri';'CvM_Pri';'Kuiper_Pri';'Watson_Pri';'AD_Pri';'KL_Pri';'JS_Pri';};
 
-for i=1:5
+for i=1:7
     thisName = structureNames{i};
     if idx(i)==1
         Structure.(thisName).Distribution = struct('Type','Exponential',...
@@ -193,9 +197,11 @@ for i=1:5
     Structure.(thisName).Statistics.Kuiper = stat(3);
     Structure.(thisName).Statistics.Watson = stat(4);
     Structure.(thisName).Statistics.Anderson_Darling = stat(5);
+    Structure.(thisName).Statistics.Kullback_Leibler = stat(6);
+    Structure.(thisName).Statistics.Jensen_Shannon = stat(7);
 end
 
-for  i=1:5
+for  i=1:7
     thisName = structureNames{i};
     thisStructure = Structure.(thisName);
     thisDistribution = thisStructure.Distribution;
