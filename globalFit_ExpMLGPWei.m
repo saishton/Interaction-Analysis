@@ -67,7 +67,7 @@ for p=1:numSplits
             thisName = fieldNames{j};
             thisData = test_data.(thisName);
             z = ones(length(thisData),1)-mlf(thisML1,1,-thisML2*thisData.^thisML1,6);
-            zprime = 
+            zprime = (-thisML1./thisData).*mlf(thisML1,1,-thisML2*thisData.^thisML1,6);
             thisTest = testStatistics(thisData,z,zprime);
             thisStats(j,:) = [thisTest.Kolmogorov_D,thisTest.Cramer_von_Mises,thisTest.Kuiper,thisTest.Watson,thisTest.Anderson_Darling,thisTest.Kullback_Leibler,thisTest.Jensen_Shannon];
         end

@@ -35,12 +35,12 @@ for i=1:length(structureNames)
     else
         height = upperParaMax;
     end
-    para.(thisName) = parameterLaTeX(thisDist,height);
+    para.(thisName) = parameterLaTex(thisDist,height);
 end
 
 if mod(length(structureNames),2)
     blankstruc = struct('Type',[]);
-    para.blank = parameterLaTeX(blankstruc,lowerParaMax);
+    para.blank = parameterLaTex(blankstruc,lowerParaMax);
     paraCount = [paraCount 1];
 end
 

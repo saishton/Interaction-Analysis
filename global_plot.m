@@ -2,8 +2,8 @@ function [] = global_plot(data,bestFits,dir_ref,property_title,graph_title,cutEx
 
 fieldNames = fieldnames(data);
 numData = length(fieldNames);
-structureNames = {'KolD_Pri';'CvM_Pri';'Kuiper_Pri';'Watson_Pri';'AD_Pri'};
-labels = {'Data','Priority: Kolmogorov-D','Priority: Cramer-von-Mises','Priority: Kuiper','Priority: Watson','Priority: Anderson-Darling'};
+structureNames = {'KolD_Pri';'CvM_Pri';'Kuiper_Pri';'Watson_Pri';'AD_Pri';'KL_Pri';'JS_Pri';};
+labels = {'Data','Priority: Kolmogorov-D','Priority: Cramer-von-Mises','Priority: Kuiper','Priority: Watson','Priority: Anderson-Darling','Priority: Kullback-Leibler','Priority: Jensen-Shannon'};
 
 splices = 1000;
 Xmax = 0;
@@ -11,9 +11,10 @@ h = zeros(1,numData+length(structureNames));
 
 fig = figure();
 hold on
+
 for p=1:numData
     thisname = fieldNames{p};
-    thisdata = allData.(thisname);
+    thisdata = data.(thisname);
     [F,X] = ecdf(thisdata);
     ccdf = 1-F;
     X = X(2:end-cutExtreme);
