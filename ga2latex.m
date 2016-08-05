@@ -59,7 +59,7 @@ elseif upperParaMax == 2
     tobuild{004} = ['\multicolumn{2}{|c||}{\multirow{2}{*}{\textbf{Parameters}}} & ',para.KolD_Pri{1},' & ',para.CvM_Pri{1},' & ',para.Kuiper_Pri{1},' & ',para.Watson_Pri{1},'\\ ',clineUpper{1}];
     tobuild{005} = ['\multicolumn{2}{|c||}{} & ',para.KolD_Pri{2},' & ',para.CvM_Pri{2},' & ',para.Kuiper_Pri{2},' & ',para.Watson_Pri{2},'\\ ',clineUpper{2}];
     tobuild{006} = '%This line has been intentionally left blank';    
-elseif upperParamax == 1
+elseif upperParaMax == 1
     tobuild{004} = ['\multicolumn{2}{|c||}{\textbf{Parameters}} & ',para.KolD_Pri(1),' & ',para.CvM_Pri(1),' & ',para.Kuiper_Pri{1},' & ',para.Watson_Pri{1},'\\ ',clineUpper{1}];
     tobuild{005} = '%This line has been intentionally left blank';
     tobuild{006} = '%This line has been intentionally left blank';
