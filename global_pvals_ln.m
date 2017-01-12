@@ -1,4 +1,4 @@
-function [p_vals] = global_pvals_ln(dataLength,mu,sigma,Statistics,cut,n)
+function [p_vals] = global_pvals_ln(dataLength,mu,sigma,Statistics,cut,n,gap)
 
 KolD = Statistics.Kolmogorov_D;
 CvM = Statistics.Cramer_von_Mises;
@@ -33,7 +33,7 @@ parfor i=1:num_MC
             end
             PDF = lognpdf(data,mu,sigma);
             CDF = logncdf(data,mu,sigma);
-            thisfit = testStatistics(data,CDF,PDF);
+            thisfit = testStatistics(data,CDF,PDF,gap);
             thisStats(j,:) = [thisfit.Kolmogorov_D,thisfit.Cramer_von_Mises,thisfit.Kuiper,thisfit.Watson,thisfit.Anderson_Darling,thisfit.Kullback_Leibler,thisfit.Jensen_Shannon];
         end
     end

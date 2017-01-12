@@ -6,10 +6,15 @@ MC_Power_ML = 3;
 
 fieldNames = fieldnames(allData);
 numData = length(fieldNames);
+res = Inf;
 
 for p=1:numData
     thisname = fieldNames{p};
     thisdata = allData.(thisname);
+    thisdata = sort(thisdata);
+    difference = diff(thisdata);
+    difference = difference(difference>0);
+    res = min([res,difference]);
     dataSize.(thisname) = length(thisdata);
     [~,X] = ecdf(thisdata);
     if cutExtreme>0
@@ -39,7 +44,7 @@ parfor p=1:numSplits
         thisData = test_data.(thisName);
         z = expcdf(thisData,thisEX1);
         zprime = exppdf(thisData,thisEX1);
-        thisTest = testStatistics(thisData,z,zprime);
+        thisTest = testStatistics(thisData,z,zprime,0);
         thisStats(j,:) = [thisTest.Kolmogorov_D,thisTest.Cramer_von_Mises,thisTest.Kuiper,thisTest.Watson,thisTest.Anderson_Darling,thisTest.Kullback_Leibler,thisTest.Jensen_Shannon];
     end
     if numData > 1
@@ -68,7 +73,7 @@ for p=1:numSplits
             thisData = test_data.(thisName);
             z = ones(length(thisData),1)-mlf(thisML1,1,-thisML2*thisData.^thisML1,6);
             zprime = (-thisML1./thisData).*mlf(thisML1,1,-thisML2*thisData.^thisML1,6);
-            thisTest = testStatistics(thisData,z,zprime);
+            thisTest = testStatistics(thisData,z,zprime,0);
             thisStats(j,:) = [thisTest.Kolmogorov_D,thisTest.Cramer_von_Mises,thisTest.Kuiper,thisTest.Watson,thisTest.Anderson_Darling,thisTest.Kullback_Leibler,thisTest.Jensen_Shannon];
         end
         if numData > 1
@@ -111,7 +116,7 @@ for p=1:numSplits
                 thisData = test_data.(thisName);
                 z = gpcdf(thisData,thisGP1);
                 zprime = gppdf(thisData,thisGP1);
-                thisTest = testStatistics(thisData,z,zprime);
+                thisTest = testStatistics(thisData,z,zprime,0);
                 thisStats(j,:) = [thisTest.Kolmogorov_D,thisTest.Cramer_von_Mises,thisTest.Kuiper,thisTest.Watson,thisTest.Anderson_Darling,thisTest.Kullback_Leibler,thisTest.Jensen_Shannon];
             end
             if numData > 1
@@ -164,7 +169,7 @@ for p=1:numSplits
             thisData = test_data.(thisName);
             z = wblcdf(thisData,thisWB1,thisWB2);
             zprime = wblpdf(thisData,thisWB1,thisWB2);
-            thisTest = testStatistics(thisData,z,zprime);
+            thisTest = testStatistics(thisData,z,zprime,0);
             thisStats(j,:) = [thisTest.Kolmogorov_D,thisTest.Cramer_von_Mises,thisTest.Kuiper,thisTest.Watson,thisTest.Anderson_Darling,thisTest.Kullback_Leibler,thisTest.Jensen_Shannon];
         end
         if numData > 1
@@ -240,12 +245,12 @@ for  i=1:7
     thisDistribution = thisStructure.Distribution;
     thisStatistics = thisStructure.Statistics;
     if strcmp(thisDistribution.Type,'Exponential')
-        Structure.(thisName).pValues = global_pvals_ex(dataSize,thisDistribution.Scale,thisStatistics,cutExtreme,MC_Power);
+        Structure.(thisName).pValues = global_pvals_ex(dataSize,thisDistribution.Scale,thisStatistics,cutExtreme,MC_Power,res);
     elseif strcmp(thisDistribution.Type,'Mittag-Leffler')
-        Structure.(thisName).pValues = global_pvals_ml(dataSize,thisDistribution.Stability,thisDistribution.Scale,thisStatistics,cutExtreme,MC_Power_ML);
+        Structure.(thisName).pValues = global_pvals_ml(dataSize,thisDistribution.Stability,thisDistribution.Scale,thisStatistics,cutExtreme,MC_Power_ML,res);
     elseif strcmp(thisDistribution.Type,'Generalised Pareto')
-        Structure.(thisName).pValues = global_pvals_gp(dataSize,thisDistribution.Shape,thisDistribution.Scale,thisDistribution.Location,thisStatistics,cutExtreme,MC_Power);
+        Structure.(thisName).pValues = global_pvals_gp(dataSize,thisDistribution.Shape,thisDistribution.Scale,thisDistribution.Location,thisStatistics,cutExtreme,MC_Power,res);
     elseif strcmp(thisDistribution.Type,'Weibull')
-        Structure.(thisName).pValues = global_pvals_wb(dataSize,thisDistribution.Scale,thisDistribution.Shape,thisStatistics,cutExtreme,MC_Power);
+        Structure.(thisName).pValues = global_pvals_wb(dataSize,thisDistribution.Scale,thisDistribution.Shape,thisStatistics,cutExtreme,MC_Power,res);
     end
 end

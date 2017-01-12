@@ -5,10 +5,15 @@ MC_Power = 6;
 
 fieldNames = fieldnames(allData);
 numData = length(fieldNames);
+res = Inf;
 
 for p=1:numData
     thisname = fieldNames{p};
     thisdata = allData.(thisname);
+    thisdata = sort(thisdata);
+    difference = diff(thisdata);
+    difference = difference(difference>0);
+    res = min([res,difference]);
     dataSize.(thisname) = length(thisdata);
     [~,X] = ecdf(thisdata);
     if cutExtreme>0
@@ -36,7 +41,7 @@ parfor p=1:numSplits
         thisData = test_data.(thisName);
         z = expcdf(thisData,thisEX1);
         zprime = exppdf(thisData,thisEX1);
-        thisTest = testStatistics(thisData,z,zprime);
+        thisTest = testStatistics(thisData,z,zprime,0);
         thisStats(j,:) = [thisTest.Kolmogorov_D,thisTest.Cramer_von_Mises,thisTest.Kuiper,thisTest.Watson,thisTest.Anderson_Darling,thisTest.Kullback_Leibler,thisTest.Jensen_Shannon];
     end
     if numData > 1
@@ -65,7 +70,7 @@ for p=1:numSplits
             thisData = test_data.(thisName);
             z = gamcdf(thisData,thisGM1,thisGM2);
             zprime = gampdf(thisData,thisGM1,thisGM2);
-            thisTest = testStatistics(thisData,z,zprime);
+            thisTest = testStatistics(thisData,z,zprime,0);
             thisStats(j,:) = [thisTest.Kolmogorov_D,thisTest.Cramer_von_Mises,thisTest.Kuiper,thisTest.Watson,thisTest.Anderson_Darling,thisTest.Kullback_Leibler,thisTest.Jensen_Shannon];
         end
         if numData > 1
@@ -104,7 +109,7 @@ parfor p=1:numSplits
         thisData = test_data.(thisName);
         z = raylcdf(thisData,thisRL1);
         zprime = raylpdf(thisData,thisRL1);
-        thisTest = testStatistics(thisData,z,zprime);
+        thisTest = testStatistics(thisData,z,zprime,0);
         thisStats(j,:) = [thisTest.Kolmogorov_D,thisTest.Cramer_von_Mises,thisTest.Kuiper,thisTest.Watson,thisTest.Anderson_Darling,thisTest.Kullback_Leibler,thisTest.Jensen_Shannon];
     end
     if numData > 1
@@ -133,7 +138,7 @@ for p=1:numSplits
             thisData = test_data.(thisName);
             z = logncdf(thisData,thisLN1,thisLN2);
             zprime = lognpdf(thisData,thisLN1,thisLN2);
-            thisTest = testStatistics(thisData,z,zprime);
+            thisTest = testStatistics(thisData,z,zprime,0);
             thisStats(j,:) = [thisTest.Kolmogorov_D,thisTest.Cramer_von_Mises,thisTest.Kuiper,thisTest.Watson,thisTest.Anderson_Darling,thisTest.Kullback_Leibler,thisTest.Jensen_Shannon];
         end
         if numData > 1
@@ -207,12 +212,12 @@ for  i=1:7
     thisDistribution = thisStructure.Distribution;
     thisStatistics = thisStructure.Statistics;
     if strcmp(thisDistribution.Type,'Exponential')
-        Structure.(thisName).pValues = global_pvals_ex(dataSize,thisDistribution.Scale,thisStatistics,cutExtreme,MC_Power);
+        Structure.(thisName).pValues = global_pvals_ex(dataSize,thisDistribution.Scale,thisStatistics,cutExtreme,MC_Power,res);
     elseif strcmp(thisDistribution.Type,'Gamma')
-        Structure.(thisName).pValues = global_pvals_gm(dataSize,thisDistribution.Shape,thisDistribution.Scale,thisStatistics,cutExtreme,MC_Power);
+        Structure.(thisName).pValues = global_pvals_gm(dataSize,thisDistribution.Shape,thisDistribution.Scale,thisStatistics,cutExtreme,MC_Power,res);
     elseif strcmp(thisDistribution.Type,'Rayleigh')
-        Structure.(thisName).pValues = global_pvals_rl(dataSize,thisDistribution.Shape,thisStatistics,cutExtreme,MC_Power);
+        Structure.(thisName).pValues = global_pvals_rl(dataSize,thisDistribution.Shape,thisStatistics,cutExtreme,MC_Power,res);
     elseif strcmp(thisDistribution.Type,'Log-Normal')
-        Structure.(thisName).pValues = global_pvals_ln(dataSize,thisDistribution.Shape,thisDistribution.Scale,thisStatistics,cutExtreme,MC_Power);
+        Structure.(thisName).pValues = global_pvals_ln(dataSize,thisDistribution.Shape,thisDistribution.Scale,thisStatistics,cutExtreme,MC_Power,res);
     end
 end

@@ -1,4 +1,4 @@
-function [p_vals] = pvals_gm(dataLength,a,b,Statistics,cut,n)
+function [p_vals] = pvals_gm(dataLength,a,b,Statistics,cut,n,gap)
 
 KolD = Statistics.Kolmogorov_D;
 CvM = Statistics.Cramer_von_Mises;
@@ -26,7 +26,7 @@ parfor i=1:num_MC
     end
     PDF = gampdf(data,a,b);
     CDF = gamcdf(data,a,b);
-    thisfit = testStatistics(data,CDF,PDF);
+    thisfit = testStatistics(data,CDF,PDF,gap);
     
     KolD_stat(i) = thisfit.Kolmogorov_D;
     CvM_stat(i) = thisfit.Cramer_von_Mises;

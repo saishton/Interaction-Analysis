@@ -1,4 +1,4 @@
-function [p_vals] = pvals_ex(dataLength,lambda,Statistics,cut,n)
+function [p_vals] = pvals_ex(dataLength,lambda,Statistics,cut,n,gap)
 
 KolD = Statistics.Kolmogorov_D;
 CvM = Statistics.Cramer_von_Mises;
@@ -18,7 +18,7 @@ AD_stat = zeros(1,num_MC);
 KL_stat = zeros(1,num_MC);
 JS_stat = zeros(1,num_MC);
 
-parfor i=1:num_MC
+for i=1:num_MC
     data = exprnd(lambda,dataLength,1);
     data = sort(data);
     if cut>0
@@ -26,7 +26,7 @@ parfor i=1:num_MC
     end    
     PDF = exppdf(data,lambda);
     CDF = expcdf(data,lambda);
-    thisfit = testStatistics(data,CDF,PDF);
+    thisfit = testStatistics(data,CDF,PDF,gap);
     
     KolD_stat(i) = thisfit.Kolmogorov_D;
     CvM_stat(i) = thisfit.Cramer_von_Mises;

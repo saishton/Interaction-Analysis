@@ -15,6 +15,9 @@ X = X(2:end-cutExtreme);
 ccdf = ccdf(2:end-cutExtreme);
 dataMod = data(~ismember(data,Xrem));
 test_data = sort(dataMod)';
+difference = diff(test_data);
+difference = difference(difference>0);
+res = min(difference);
 
 %==Choose initial values (using MoM)==%
 M1 = mean(dataMod);
@@ -77,10 +80,10 @@ zp_ml = (-ml_beta./test_data).*mlf(ml_beta,1,-ml_gamma*test_data.^ml_beta,6);
 zp_gp = gppdf(test_data,gp_k,gp_sigma,gp_theta);
 zp_wb = wblpdf(test_data,wb_a,wb_b);
 
-stats_ex = testStatistics(test_data,z_ex,zp_ex);
-stats_ml = testStatistics(test_data,z_ml,zp_ml);
-stats_gp = testStatistics(test_data,z_gp,zp_gp);
-stats_wb = testStatistics(test_data,z_wb,zp_wb);
+stats_ex = testStatistics(test_data,z_ex,zp_ex,0);
+stats_ml = testStatistics(test_data,z_ml,zp_ml,0);
+stats_gp = testStatistics(test_data,z_gp,zp_gp,0);
+stats_wb = testStatistics(test_data,z_wb,zp_wb,0);
 
 %==Plotting==%
 fig = figure();
@@ -108,10 +111,10 @@ struc_ml = struct('Stability',ml_beta,'Scale',ml_gamma);
 struc_gp = struct('Shape',gp_k,'Scale',gp_sigma,'Location',gp_theta);
 struc_wb = struct('Scale',wb_a,'Shape',wb_b);
 
-p_ex = pvals_ex(samplesize,ex_lambda,stats_ex,cutExtreme,MC_Power);
-p_ml = pvals_ml(samplesize,ml_beta,ml_gamma,stats_ml,cutExtreme,MC_Power_ML);
-p_gp = pvals_gp(samplesize,gp_k,gp_sigma,gp_theta,stats_gp,cutExtreme,MC_Power);
-p_wb = pvals_wb(samplesize,wb_a,wb_b,stats_wb,cutExtreme,MC_Power);
+p_ex = pvals_ex(samplesize,ex_lambda,stats_ex,cutExtreme,MC_Power,res);
+p_ml = pvals_ml(samplesize,ml_beta,ml_gamma,stats_ml,cutExtreme,MC_Power_ML,res);
+p_gp = pvals_gp(samplesize,gp_k,gp_sigma,gp_theta,stats_gp,cutExtreme,MC_Power,res);
+p_wb = pvals_wb(samplesize,wb_a,wb_b,stats_wb,cutExtreme,MC_Power,res);
 
 EX = struct('Parameters',struc_ex,'Statistics',stats_ex,'pValues',p_ex);
 ML = struct('Parameters',struc_ml,'Statistics',stats_ml,'pValues',p_ml);

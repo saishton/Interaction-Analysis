@@ -1,4 +1,4 @@
-function [p_vals] = pvals_ml(dataLength,beta,gamma,Statistics,cut,n)
+function [p_vals] = pvals_ml(dataLength,beta,gamma,Statistics,cut,n,gap)
 
 KolD = Statistics.Kolmogorov_D;
 CvM = Statistics.Cramer_von_Mises;
@@ -26,7 +26,7 @@ for i=1:num_MC
     end
     PDF = (-beta./data).*mlf(beta,1,-gamma*data.^beta,6);
     CDF = ones(length(data),1)-mlf(beta,1,-gamma*data.^beta,6);
-    thisfit = testStatistics(data,CDF,PDF);
+    thisfit = testStatistics(data,CDF,PDF,gap);
 
     KolD_stat(i) = thisfit.Kolmogorov_D;
     CvM_stat(i) = thisfit.Cramer_von_Mises;

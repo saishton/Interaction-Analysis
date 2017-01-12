@@ -1,4 +1,4 @@
-function fit = testStatistics(X,Z,Zprime)
+function fit = testStatistics(X,Z,Zprime,gap)
 
 n = length(X);
 uni = unique(X);
@@ -14,8 +14,16 @@ lowerecdf = fullecdf(1:n);
 upperecdf = fullecdf(2:n+1);
 middlecdf = (lowerecdf+upperecdf)/2;
 
-P = (upperecdf - lowerecdf)';
-Q = Zprime';
+if gap>0
+    Xr = floor(X/gap)*gap;
+else
+    Xr = X;
+end
+[~,ia,~] = unique(Xr);
+[hp,xp] = hist(Xr,Xr);
+P = (hp/trapz(xp,hp));
+P = P(ia);
+Q = Zprime(ia)';
 
 Dplu = max(lowerecdf-Z);
 Dmin = max(Z-upperecdf);

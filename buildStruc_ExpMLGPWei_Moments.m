@@ -14,6 +14,9 @@ X = X(2:end-cutExtreme);
 ccdf = ccdf(2:end-cutExtreme);
 dataMod = data(~ismember(data,Xrem));
 test_data = sort(dataMod)';
+difference = diff(test_data);
+difference = difference(difference>0);
+res = min(difference);
 
 %==Prepare MoM==%
 M1 = mean(dataMod);
@@ -34,8 +37,8 @@ z_gp = gpcdf(test_data,gp_k,gp_sigma,gp_theta);
 zp_ex = exppdf(test_data,ex_lambda);
 zp_gp = gppdf(test_data,gp_k,gp_sigma,gp_theta);
 
-stats_ex = testStatistics(test_data,z_ex,zp_ex);
-stats_gp = testStatistics(test_data,z_gp,zp_gp);
+stats_ex = testStatistics(test_data,z_ex,zp_ex,0);
+stats_gp = testStatistics(test_data,z_gp,zp_gp,0);
 
 %==Plotting==%
 fig = figure();
@@ -59,8 +62,8 @@ samplesize = max(size(data));
 struc_ex = struct('Scale',ex_lambda);
 struc_gp = struct('Shape',gp_k,'Scale',gp_sigma,'Location',gp_theta);
 
-p_ex = pvals_ex(samplesize,ex_lambda,stats_ex,cutExtreme,MC_Power);
-p_gp = pvals_gp(samplesize,gp_k,gp_sigma,gp_theta,stats_gp,cutExtreme,MC_Power);
+p_ex = pvals_ex(samplesize,ex_lambda,stats_ex,cutExtreme,MC_Power,res);
+p_gp = pvals_gp(samplesize,gp_k,gp_sigma,gp_theta,stats_gp,cutExtreme,MC_Power,res);
 
 EX = struct('Parameters',struc_ex,'Statistics',stats_ex,'pValues',p_ex);
 GP = struct('Parameters',struc_gp,'Statistics',stats_gp,'pValues',p_gp);
